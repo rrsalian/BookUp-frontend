@@ -37,7 +37,7 @@ export function BookFinder() {
                 <input type="text" placeholder="enter a book" value={search} onChange={e => setSearch(e.target.value)} />
                 <button>Search</button>
             </form>
-            <BookList bookList={bookData}/>  
+            <BookList bookList={bookData}/>
         </div>
     )
 }
