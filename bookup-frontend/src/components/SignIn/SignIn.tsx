@@ -3,6 +3,7 @@ import { signInWithGoogle, signOut } from "../../firebaseConfig";
 import AuthContext from "../../contexts/AuthContext";
 import { BookFinder } from "../BookFinder/BookFinder";
 import "./SignIn.css"
+import bookUserPhoto from "../../images/5738803.png"
 
 
 export function SignIn() {
@@ -31,7 +32,7 @@ export function SignIn() {
                                 
                             </div>
                             <div className="user-profile">
-                        { !!user?.photoURL && <button><img onClick={toggleDropDown} className="user-photo" src={user.photoURL} alt="" width="40px"/></button>}
+                        { !!user?.photoURL && <button><img onClick={toggleDropDown} className="user-photo" src={!user.photoURL ? bookUserPhoto : user.photoURL} alt="" width="40px"/></button>}
                             <h2> {user.displayName} </h2>
                         </div>
                         
