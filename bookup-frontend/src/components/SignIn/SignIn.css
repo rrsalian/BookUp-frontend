@@ -1,0 +1,51 @@
+
+
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 20px;
+}
+
+
+
+
+.dropdown li {
+    margin: 10px;
+    list-style-type: none;
+}
+
+.user-profile {
+    display: flex;
+}
+
+.user-profile button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.user-photo {
+    border-radius: 50%;
+}
+
+.dropdown {
+    padding: 10px;
+    width: 200px;
+    
+    border: 1px solid black;
+    position: fixed;
+    top: 4%;
+    left:85%;
+    z-index: 100;
+}
+
+.dropdown button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
