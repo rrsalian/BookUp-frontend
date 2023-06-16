@@ -1,0 +1,36 @@
+
+
+.find-a-book {
+    font-size: 3rem;
+}
+
+.book-search {
+    padding: 10px;
+    font-size: 1.6rem;
+    width: 30%;
+}
+
+.search-btn {
+    padding: 10px;
+    font-size: 1.6rem;
+    margin-top: 10px;
+    background-color: #9abcd5;
+    border-top: 3px solid #528ba2;
+    border-right: 3px solid #386373;
+    border-left: 3px solid #294d5a;
+    border-bottom: 3px solid #0e272f;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-btn:hover {
+    background-color: rgb(179, 208, 227);
+}
+
+.search-btn:active {
+    background-color: #92afc3;
+    border-bottom: 3px solid #528ba2;
+    border-left: 3px solid #386373;
+    border-right: 3px solid #294d5a;
+    border-top: 3px solid #0e272f;
+}

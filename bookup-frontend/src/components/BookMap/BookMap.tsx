@@ -61,7 +61,7 @@ const midPointStyle = "background-color: #ff0000; color: #ffffff; font-weight: b
 export function BookMap() {
   return (
     <div className='App'>
-        <MapContainer center={bookCoord.latLon} zoom={13} scrollWheelZoom={false} style={{width: "100vw", height: "100vh"}}>
+        <MapContainer center={bookCoord.latLon} zoom={13} scrollWheelZoom={false} style={{width: "50vw", height: "50vh", margin: "10px auto", border: "2px solid #143642"}}>
           <TileLayer url="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png" />
           {booksCoords.map(b => (
             <Marker position={b.latLon} icon={b.image != null ? b.image : iconImage}>

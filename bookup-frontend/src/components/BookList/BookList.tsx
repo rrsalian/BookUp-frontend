@@ -1,10 +1,13 @@
 import { BookCard } from "../BookCard/BookCard";
 import "./BookList.css"
 import { BookMap } from "../BookMap/BookMap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 export function BookList(props: {bookList: any[]}) {
+
+
+
 
     const [showMap, setShowMap] = useState(false);
     let mapCon = showMap ?  <BookMap></BookMap> : "";

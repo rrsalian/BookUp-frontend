@@ -1,10 +1,18 @@
 
-
+.header {
+    width: 100vw;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #143642a2;
+    background-color: #9abcd5;
+    box-shadow: 1px 1px 7px 3px #14364266;
+}
 
 .navbar {
     display: flex;
     justify-content: space-between;
-    margin: 0 20px;
+    margin: 0;
+    
 }
 
 
@@ -16,7 +24,8 @@
 }
 
 .user-profile {
-    display: flex;
+    margin-right: 20px;
+    align-self: center;
 }
 
 .user-profile button {
@@ -27,17 +36,20 @@
 
 .user-photo {
     border-radius: 50%;
+    border: 2px solid #143642;
 }
 
 .dropdown {
     padding: 10px;
     width: 200px;
-    
-    border: 1px solid black;
     position: fixed;
-    top: 4%;
-    left:85%;
-    z-index: 100;
+    border-top: none;
+    border-right: 2px solid #143642;
+    border-left: 2px solid #143642;
+    border-bottom: 2px solid #143642;
+    top: 6.5%;
+    right: 0.5%;
+    z-index: 200;
 }
 
 .dropdown button {

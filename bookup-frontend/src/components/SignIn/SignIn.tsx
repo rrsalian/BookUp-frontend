@@ -21,28 +21,31 @@ export function SignIn() {
             <div>
                 {user ?
                     <div>
-                        <nav className="navbar">
-                            <div>
-                                <h1 className="logo">BookUp</h1>
-                            </div>
-                            <div>
-                                
-                            </div>
-                            <div>
-                                
-                            </div>
-                            <div className="user-profile">
-                        { !!user?.photoURL && <button><img onClick={toggleDropDown} className="user-photo" src={!user.photoURL ? bookUserPhoto : user.photoURL} alt="" width="40px"/></button>}
-                            <h2> {user.displayName} </h2>
-                        </div>
-                        
-                        </nav>
+                        <header className="header">
+                            <nav className="navbar">
+                                <div>
+                                    <h1 className="logo">BookUp</h1>
+                                </div>
+                                <div>
+
+                                </div>
+                                <div>
+
+                                </div>
+                                <div className="user-profile">
+                                    {!!user?.photoURL && <button><img onClick={toggleDropDown} className="user-photo" src={!user.photoURL ? bookUserPhoto : user.photoURL} alt="" width="40px" /></button>}
+
+                                </div>
+
+                            </nav>
+                        </header>
                         <div className={dropdown ? "dropdown" : "hidden"}>
-                        <ul>
-                                    <li>My Books</li>
-                                    <li>Find a Book</li>
-                                    <button onClick={signOut}>Sign Out</button>
-                                </ul>
+                            <p> {user.displayName} </p>
+                            <ul>
+                                <li>My Books</li>
+                                <li>Find a Book</li>
+                                <button onClick={signOut}>Sign Out</button>
+                            </ul>
 
                         </div>
                         <BookFinder />
