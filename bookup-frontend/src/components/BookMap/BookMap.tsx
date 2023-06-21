@@ -52,7 +52,8 @@ let booksCoords: BookCoord[] = [
 
 let polyLinePosition = [
   booksCoords[0].latLon,
-  booksCoords[1].latLon
+  booksCoords[1].latLon,
+  booksCoords[2].latLon
 ];
 
 const iconImage: DivIcon = new DivIcon({ html: "<img src='https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png' />" });
