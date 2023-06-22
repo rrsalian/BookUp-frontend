@@ -14,19 +14,21 @@ export function SignIn() {
     const { user } = useContext(AuthContext);
 
     const [dropdown, setDropDown] = useState(false)
-    
+
     const [zipcode, setZipcode] = useState("");
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
 
     const toggleDropDown = () => dropdown ? setDropDown(false) : setDropDown(true)
 
     function handleAddUser(e: FormEvent) {
-        e.preventDefault();
+        //e.preventDefault();
         const myZip = zipList.filter(zip => zip.zip === zipcode);
 
         const newBuser: Buser = {
             uid: user!.uid,
             email: user!.email!,
-            zipcode: {zip: myZip[0].zip, lat: myZip[0].lat, lon: myZip[0].lon},
+            zipcode: { zip: myZip[0].zip, lat: myZip[0].lat, lon: myZip[0].lon },
             books: []
 
         }
@@ -37,14 +39,29 @@ export function SignIn() {
     }
 
     useEffect(() => {
-        getUserByEmail(user?.email!)
-    },[])
+        const foundUser = getUserByEmail(user?.email!).then((res) => setIsLoggedIn(res !== null))
 
 
-    return (
-        <div>
+    }, [user])
+
+    async function checkLogin() {
+        let res = await signInWithGoogle();
+        setIsLoggedIn(res !== null && await getUserByEmail(res?.email!) !== null)
+    }
+
+    let test = <div></div>
+    if (user && !isLoggedIn) {
+        return (
+            <form>
+                <label>Enter your zip to find your next book</label>
+                <input type="text" value={zipcode} onChange={(e) => setZipcode(e.target.value)}/>
+                <button onClick={handleAddUser}>Submit</button>
+            </form>
+        )
+    } else if (user && isLoggedIn) {
+        return (
             <div>
-                {user ?
+                <div>
                     <div>
                         <header className="header">
                             <nav className="navbar">
@@ -74,12 +91,15 @@ export function SignIn() {
 
                         </div>
                         <BookFinder />
-                    </div> :
-                    <div>
-                        <button onClick={signInWithGoogle}>Sign in with Google</button>
                     </div>
-                }
+                </div>
             </div>
-        </div>
-    )
+        )
+    } else {
+        return (
+            <div>
+                <button onClick={checkLogin}>Sign in with Google</button>
+            </div>
+        )
+    }
 }

@@ -13,7 +13,7 @@ export async function getUserById(_id: string): Promise<Buser> {
 }
 
 export async function getUserByEmail(email: string): Promise<Buser> {
-    const response = await axios.get<Buser>(`https://us-central1-bookup-4c4c7.cloudfunctions.net/api/users/email${email}`);
+    const response = await axios.get<Buser>(`https://us-central1-bookup-4c4c7.cloudfunctions.net/api/users/email/${email}`);
     return response.data;
 }
 
