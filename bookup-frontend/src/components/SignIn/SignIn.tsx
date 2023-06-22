@@ -1,9 +1,12 @@
-import { useContext, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { signInWithGoogle, signOut } from "../../firebaseConfig";
 import AuthContext from "../../contexts/AuthContext";
 import { BookFinder } from "../BookFinder/BookFinder";
 import "./SignIn.css"
 import bookUserPhoto from "../../images/5738803.png"
+import { Buser } from "../../models/User";
+import { USZip, zipList } from "../../models/USZip";
+import { addUser, getUserByEmail } from "../../services/bookSearchService/userService";
 
 
 export function SignIn() {
@@ -11,8 +14,32 @@ export function SignIn() {
     const { user } = useContext(AuthContext);
 
     const [dropdown, setDropDown] = useState(false)
+    
+    const [zipcode, setZipcode] = useState("");
 
     const toggleDropDown = () => dropdown ? setDropDown(false) : setDropDown(true)
+
+    function handleAddUser(e: FormEvent) {
+        e.preventDefault();
+        const myZip = zipList.filter(zip => zip.zip === zipcode);
+
+        const newBuser: Buser = {
+            uid: user!.uid,
+            email: user!.email!,
+            zipcode: {zip: myZip[0].zip, lat: myZip[0].lat, lon: myZip[0].lon},
+            books: []
+
+        }
+
+        addUser(newBuser)
+        setZipcode("");
+
+    }
+
+    useEffect(() => {
+        getUserByEmail(user?.email!)
+    },[])
+
 
     return (
         <div>

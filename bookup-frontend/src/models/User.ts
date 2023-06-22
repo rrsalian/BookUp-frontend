@@ -1,6 +1,6 @@
 import { USZip } from "./USZip";
 
-export interface User {
+export interface Buser {
     _id?: string,
     uid: string,
     email: string,
