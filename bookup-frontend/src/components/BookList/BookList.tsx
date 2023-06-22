@@ -10,7 +10,6 @@ export function BookList(props: {bookList: any[], user:Buser}) {
     const [showBtnPopUp, setShowBtnPopUp] = useState(false);
     const [showBook, setShowBook] = useState({});
     const [showMap, setShowMap] = useState(false);
-    let mapCon = showMap ?  <BookMap user={props.user}></BookMap> : "";
 
     const handleShowBtnPopUp = (book: any) => {
         if (!showBtnPopUp) {
@@ -34,10 +33,12 @@ export function BookList(props: {bookList: any[], user:Buser}) {
     useEffect ( () => {
         console.log(showBtnPopUp);
     },[showBtnPopUp])
-       
+     
+    let mapCon = showMap ?  <BookMap user={props.user} closeMap={showBookLocation}></BookMap> : "";
+
     return (
        <div> 
-            <button onClick = {()=> setShowMap(!showMap)}> Toggle Map</button>
+    
             {mapCon}
             <div className="booklist">
             {
