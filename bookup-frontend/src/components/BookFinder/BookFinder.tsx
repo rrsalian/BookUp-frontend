@@ -3,8 +3,9 @@ import { FormEvent, useEffect, useState } from "react"
 import { getBooks } from "../../services/bookSearchService/bookSearchService";
 import { BookList } from "../BookList/BookList";
 import "./BookFinder.css"
+import { Buser } from "../../models/User";
 
-export function BookFinder() {
+export function BookFinder(props: {user:Buser}) {
 
     const [search, setSearch] = useState("");
     const [bookData, setBookData] = useState([])
@@ -39,7 +40,7 @@ export function BookFinder() {
                     <button className="search-btn">Search</button>
                 </div>
             </form>
-            <BookList bookList={bookData} />
+            <BookList bookList={bookData} user={props.user} />
         </div>
     )
 }

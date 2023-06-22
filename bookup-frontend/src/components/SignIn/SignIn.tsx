@@ -17,7 +17,9 @@ export function SignIn() {
 
     const [zipcode, setZipcode] = useState("");
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const [bUser, setBuser] = useState<Buser>();
 
     const toggleDropDown = () => dropdown ? setDropDown(false) : setDropDown(true)
 
@@ -35,18 +37,18 @@ export function SignIn() {
 
         addUser(newBuser)
         setZipcode("");
-
+        setBuser(newBuser);
     }
 
     useEffect(() => {
-        const foundUser = getUserByEmail(user?.email!).then((res) => setIsLoggedIn(res !== null))
-
+        const foundUser = getUserByEmail(user?.email!).then((res) => { setIsLoggedIn(res !== null); setBuser(res);})
 
     }, [user])
 
     async function checkLogin() {
         let res = await signInWithGoogle();
-        setIsLoggedIn(res !== null && await getUserByEmail(res?.email!) !== null)
+        setBuser(await getUserByEmail(res?.email!));
+        setIsLoggedIn(res !== null && bUser !== null)
     }
 
     let test = <div></div>
@@ -90,7 +92,7 @@ export function SignIn() {
                             </ul>
 
                         </div>
-                        <BookFinder />
+                        <BookFinder user={bUser!} />
                     </div>
                 </div>
             </div>

@@ -2,14 +2,15 @@ import { BookCard } from "../BookCard/BookCard";
 import "./BookList.css"
 import { BookMap } from "../BookMap/BookMap";
 import { useEffect, useState } from "react";
+import { Buser } from "../../models/User";
 
 
-export function BookList(props: {bookList: any[]}) {
+export function BookList(props: {bookList: any[], user:Buser}) {
 
     const [showBtnPopUp, setShowBtnPopUp] = useState(false);
     const [showBook, setShowBook] = useState({});
     const [showMap, setShowMap] = useState(false);
-    let mapCon = showMap ?  <BookMap></BookMap> : "";
+    let mapCon = showMap ?  <BookMap user={props.user}></BookMap> : "";
 
     const handleShowBtnPopUp = (book: any) => {
         if (!showBtnPopUp) {
@@ -24,6 +25,10 @@ export function BookList(props: {bookList: any[]}) {
             setShowBook({});
             console.log(showBtnPopUp);
         }
+    }
+
+    const showBookLocation = () => {
+        setShowMap(!showMap);
     }
 
     useEffect ( () => {
@@ -42,7 +47,7 @@ export function BookList(props: {bookList: any[]}) {
                             {
                             <button onClick={() => handleShowBtnPopUp(book)} className="book-btn"><img className="book-image" src={book.volumeInfo.imageLinks?.thumbnail} alt="" /></button>                            
                             }                        
-                            <BookCard key={index} book={showBook} showBtnPopUp={showBtnPopUp} onClose={handleHideBtnPopUp}/>
+                            <BookCard key={index} book={showBook} showBtnPopUp={showBtnPopUp} onClose={handleHideBtnPopUp} showBookLocation={showBookLocation}/>
                         </div>
                     )
                 )

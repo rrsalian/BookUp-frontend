@@ -3,7 +3,7 @@ import "./BookCard.css"
 import { BookView } from "../BookView/BookView"
 import { useEffect, useState } from "react"
 
-export function BookCard(props: { book: any, showBtnPopUp:boolean, onClose: () => void }) {
+export function BookCard(props: { book: any, showBtnPopUp:boolean, onClose: () => void, showBookLocation: () => void }) {
 
 
     if (props.showBtnPopUp) {
@@ -17,7 +17,7 @@ export function BookCard(props: { book: any, showBtnPopUp:boolean, onClose: () =
                     <p>Description: {props.book.volumeInfo.description}</p>
                     <address>Author/s: {props.book.volumeInfo.authors}</address>
                     <p>ISBN: {props.book.volumeInfo.industryIdentifiers[0].identifier}</p>
-                    <button>Add to my Wishlist</button>
+                    <button onClick={props.showBookLocation}>I want This Book</button>
                     <button>I have this book</button>
                 </div>
             </div>
