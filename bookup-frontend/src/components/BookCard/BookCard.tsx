@@ -3,8 +3,14 @@ import "./BookCard.css"
 import { BookView } from "../BookView/BookView"
 import { useEffect, useState } from "react"
 
-export function BookCard(props: { book: any, showBtnPopUp:boolean, onClose: () => void, showBookLocation: () => void }) {
 
+
+export function BookCard(props: { book: any, showBtnPopUp:boolean, onClose: () => void, showBookLocation: () => void , addBook: (isbn: string) => void, isbn: (isbn: string) => void}) {
+
+    function handleIsbn() {
+        props.addBook(props.book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? props.book.volumeInfo.industryIdentifiers[0].identifier: props.book.volumeInfo.industryIdentifiers[1].identifier);
+        props.isbn(props.book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? props.book.volumeInfo.industryIdentifiers[0].identifier: props.book.volumeInfo.industryIdentifiers[1].identifier);
+    }
 
     if (props.showBtnPopUp) {
         return (
@@ -14,11 +20,11 @@ export function BookCard(props: { book: any, showBtnPopUp:boolean, onClose: () =
                     <img className="book-image" src={props.book.volumeInfo.imageLinks?.thumbnail} alt="" />
                     <p>Title: {props.book.volumeInfo.title}</p>
                     <p>Subtitle: {props.book.volumeInfo.subtitle}</p>
-                    <p>Description: {props.book.volumeInfo.description}</p>
+                    <p>Text Snippet: {props.book.searchInfo.textSnippet}</p>
                     <address>Author/s: {props.book.volumeInfo.authors}</address>
-                    <p>ISBN: {props.book.volumeInfo.industryIdentifiers[0].identifier}</p>
+                    <p>ISBN: { props.book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? props.book.volumeInfo.industryIdentifiers[0].identifier: props.book.volumeInfo.industryIdentifiers[1].identifier}</p>
                     <button onClick={props.showBookLocation}>I want This Book</button>
-                    <button>I have this book</button>
+                    <button onClick={handleIsbn}>I have this book</button>
                 </div>
             </div>
         );

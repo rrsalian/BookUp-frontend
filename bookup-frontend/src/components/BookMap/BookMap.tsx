@@ -55,7 +55,7 @@ export function BookMap(props: { user: Buser, closeMap: () => void }) {
     <div className='App'>
         <div onClick={props.closeMap} style={{fontSize: "20pt", position: "absolute", right: "25vw", zIndex: "1000", cursor: "pointer"}}>X</div>
         <MapContainer center={myPosition.latLon} zoom={13} scrollWheelZoom={false} style={{width: "50vw", height: "50vh", margin: "10px auto", border: "2px solid #143642"}}>
-          <TileLayer url="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png" />
+          <TileLayer url="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png?api_key=AIzaSyAojJ6BE6gL6i34puKfrrf_s918JAzszZs" />
           <Marker position={myPosition.latLon} icon={new DivIcon({html: "<img style='width: 70px; margin-left: -30px; margin-top: -30px;' src='https://www.freeiconspng.com/thumbs/person-icon/person-icon-person-icon-clipart-image-from-our-icon-clipart-category--9.png' />" })}>
             <Popup>
               ME!
