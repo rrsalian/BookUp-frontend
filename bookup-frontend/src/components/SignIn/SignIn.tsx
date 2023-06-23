@@ -7,9 +7,10 @@ import bookUserPhoto from "../../images/5738803.png"
 import { Buser } from "../../models/User";
 import { USZip, zipList } from "../../models/USZip";
 import { addUser, getUserByEmail } from "../../services/bookSearchService/userService";
+import { Link } from "react-router-dom";
 
 
-export function SignIn() {
+export function SignIn(props: {activeUser: (activeUser: Buser) => void}) {
 
     const { user } = useContext(AuthContext);
 
@@ -41,7 +42,10 @@ export function SignIn() {
     }
 
     useEffect(() => {
-        const foundUser = getUserByEmail(user?.email!).then((res) => { setIsLoggedIn(res !== null); setBuser(res);})
+        const foundUser = getUserByEmail(user?.email!).then((res) => { setIsLoggedIn(res !== null); setBuser(res);props.activeUser(res!) })
+        console.log(foundUser);
+        
+
 
     }, [user])
 
@@ -56,7 +60,7 @@ export function SignIn() {
         return (
             <form>
                 <label>Enter your zip to find your next book</label>
-                <input type="text" value={zipcode} onChange={(e) => setZipcode(e.target.value)}/>
+                <input type="text" value={zipcode} onChange={(e) => setZipcode(e.target.value)} />
                 <button onClick={handleAddUser}>Submit</button>
             </form>
         )
@@ -80,18 +84,18 @@ export function SignIn() {
                                     {!!user?.photoURL && <button><img onClick={toggleDropDown} className="user-photo" src={!user.photoURL ? bookUserPhoto : user.photoURL} alt="" width="40px" /></button>}
 
                                 </div>
+                                <div className={dropdown ? "dropdown" : "hidden"}>
+                                    <p> {user.displayName} </p>
+                                    <ul>
+                                        <li className="navHover"><Link to="/mybooks">My Books</Link></li>
+                                        <li className="navHover">Find a Book</li>
+                                        <button className="navHover" onClick={signOut}>Sign Out</button>
+                                    </ul>
+                                </div>
 
                             </nav>
                         </header>
-                        <div className={dropdown ? "dropdown" : "hidden"}>
-                            <p> {user.displayName} </p>
-                            <ul>
-                                <li>My Books</li>
-                                <li>Find a Book</li>
-                                <button onClick={signOut}>Sign Out</button>
-                            </ul>
 
-                        </div>
                         <BookFinder user={bUser!} />
                     </div>
                 </div>
