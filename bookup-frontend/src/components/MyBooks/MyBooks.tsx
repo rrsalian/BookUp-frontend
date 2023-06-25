@@ -9,23 +9,27 @@ import "./MyBooks.css";
 export function MyBooks(props: {currentUser: Buser}) {
 
     const [userBookList, setUserBookList] = useState<any[]>([]);
-    let bookList: any[] = []
+    //let bookList: any[] = []
     
     async function getUserBookList( bUser: Buser ) {
-        for (let book of bUser.books) {
-            
-            let bArray: any[] = [];
+        let bArray: any[] = [];
 
+        for (let book of bUser.books) {
+                
             await getBook(book).then( book => {
-                bArray = [ ...bArray , ...book.data.items];                
+                
+                bArray = [ ...bArray , ...book.data.items ];                
             })
             
             setUserBookList(bArray);
+            console.log(bArray);
         }
     }
 
     useEffect(() => {        
-        getUserBookList(props.currentUser);       
+        console.log("useEffect");
+        getUserBookList(props.currentUser);
+        
     },[props.currentUser]);
     
   
@@ -37,14 +41,14 @@ export function MyBooks(props: {currentUser: Buser}) {
                 <div className="mybooks">
                     {                        
                     userBookList.map( (book ,index) => 
-                        <div className="book" key={book.id}>
-                            <img  className="book-image" src={book.volumeInfo.imageLinks?.thumbnail!} alt="" />
-                            <p>Title: {book.volumeInfo.title}</p>
-                            <p>Subtitle: {book.volumeInfo.subtitle}</p>
-                            <p>Text Snippet: {book.searchInfo.textSnippet}</p>
-                            <address>Author/s: {book.volumeInfo.authors}</address>
-                            <p>ISBN: {book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? book.volumeInfo.industryIdentifiers[0].identifier: book.volumeInfo.industryIdentifiers[1].identifier}</p>
-                        </div>)
+                    <div className="book" key={book.id}>
+                        <img  className="book-image" src={book.volumeInfo.imageLinks?.thumbnail!} alt="" />
+                        <p>Title: {book.volumeInfo.title}</p>
+                        <p>Subtitle: {book.volumeInfo.subtitle}</p>
+                        <p>Text Snippet: {book.searchInfo.textSnippet}</p>
+                        <address>Author/s: {book.volumeInfo.authors}</address>
+                        <p>ISBN: {book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? book.volumeInfo.industryIdentifiers[0].identifier: book.volumeInfo.industryIdentifiers[1].identifier}</p>
+                    </div>)
                     }
                 </div>  
             </div>
