@@ -15,13 +15,10 @@ export function BookList(props: {bookList: any[], user:Buser}) {
     
     let userBooks = Object.assign(props.user.books);
 
-    const handleShowBtnPopUp = (book: any, index:number) => {
+    const handleShowBtnPopUp = (book: any) => {
         if (!showBtnPopUp) {
             setShowBtnPopUp(true);
             setShowBook(book);
-            console.log("showBook: " + JSON.stringify(showBook));
-            console.log("index: " + index);
-            console.log("book " + JSON.stringify(book));
         }
     };
 
@@ -40,8 +37,7 @@ export function BookList(props: {bookList: any[], user:Buser}) {
     function addBook(newIsbn:string) {  
         console.log("isbn " +  newIsbn);
         userBooks.push(newIsbn);
-        //const books: string[] = [ ...props.user.books, newIsbn];
-    
+            
         const buser = { "_id" : props.user._id,
                         "uid" : props.user.uid,
                         "email": props.user.email,
@@ -67,7 +63,7 @@ export function BookList(props: {bookList: any[], user:Buser}) {
                     (   
                         <div className="bookcard">
                             
-                            <button key={index} onClick={() => handleShowBtnPopUp(book, index)} className="book-btn"><img className="book-image" src={book.volumeInfo.imageLinks?.thumbnail} alt="" /></button>                           
+                            <button key={index} onClick={() => handleShowBtnPopUp(book)} className="book-btn"><img className="book-image" src={book.volumeInfo.imageLinks?.thumbnail} alt="" /></button>                           
                             
                         </div>
                     )

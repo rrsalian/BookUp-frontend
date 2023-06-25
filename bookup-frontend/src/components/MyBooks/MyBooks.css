@@ -1,0 +1,11 @@
+.mybooks{
+   
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.book {
+    width: 200px;
+    height: 200px;
+    justify-content: center;
+}
