@@ -8,9 +8,9 @@ import { Buser } from "../../models/User";
 import { USZip, zipList } from "../../models/USZip";
 import { addUser, getUserByEmail } from "../../services/bookSearchService/userService";
 import { Link } from "react-router-dom";
+import googleLogo from "../../images/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png"
 
-
-export function SignIn(props: {activeUser: (activeUser: Buser) => void}) {
+export function SignIn(props: { activeUser: (activeUser: Buser) => void }) {
 
     const { user } = useContext(AuthContext);
 
@@ -42,9 +42,9 @@ export function SignIn(props: {activeUser: (activeUser: Buser) => void}) {
     }
 
     useEffect(() => {
-        const foundUser = getUserByEmail(user?.email!).then((res) => { setIsLoggedIn(res !== null); setBuser(res);props.activeUser(res!) })
+        const foundUser = getUserByEmail(user?.email!).then((res) => { setIsLoggedIn(res !== null); setBuser(res); props.activeUser(res!) })
         console.log(foundUser);
-        
+
 
 
     }, [user])
@@ -103,8 +103,14 @@ export function SignIn(props: {activeUser: (activeUser: Buser) => void}) {
         )
     } else {
         return (
-            <div>
-                <button onClick={checkLogin}>Sign in with Google</button>
+            <div className="sign-in-background">
+                <div className="sign-in-box">
+                    <h2 className="sign-in-logo">BookUp</h2>
+                    <div className="sign-in-caption-container">
+                        <p className="sign-in-caption">Sign in below using your Google Account to access the BookUp app.</p>
+                    </div>
+                    <button className="sign-in-button" onClick={checkLogin}><div><img className="google-logo" src={googleLogo} alt="" /></div><div>Sign in with Google</div></button>
+                </div>
             </div>
         )
     }

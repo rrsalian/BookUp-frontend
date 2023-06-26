@@ -33,7 +33,7 @@ export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, 
   props.isbnUsers.forEach(u => {
     booksCoords.push({
       name: u.email,
-      image: new DivIcon({html: "<div>IMAGE GO HERE</div>"}),
+      image: new DivIcon({html: "<div>IMAGE GOES HERE</div>"}),
       zip: u.zipcode.zip,
       latLon: [u.zipcode.lat, u.zipcode.lon]
     });
