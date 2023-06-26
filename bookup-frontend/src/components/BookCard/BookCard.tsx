@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 
 
 
-export function BookCard(props: { book: any, showBtnPopUp:boolean, onClose: () => void, showBookLocation: () => void , addBook: (isbn: string) => void, isbn: (isbn: string) => void}) {
+export function BookCard(props: { book: any, showBtnPopUp:boolean, onClose: () => void, showBookLocation: (isbn: string) => void , addBook: (isbn: string) => void, isbn: (isbn: string) => void}) {
 
     function handleIsbn() {
         props.addBook(props.book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? props.book.volumeInfo.industryIdentifiers[0].identifier: props.book.volumeInfo.industryIdentifiers[1].identifier);
@@ -23,7 +23,7 @@ export function BookCard(props: { book: any, showBtnPopUp:boolean, onClose: () =
                     <p>Text Snippet: {props.book.searchInfo.textSnippet}</p>
                     <address>Author/s: {props.book.volumeInfo.authors}</address>
                     <p>ISBN: { props.book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? props.book.volumeInfo.industryIdentifiers[0].identifier: props.book.volumeInfo.industryIdentifiers[1].identifier}</p>
-                    <button onClick={props.showBookLocation}>I want This Book</button>
+                    <button onClick={() => props.showBookLocation(props.book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? props.book.volumeInfo.industryIdentifiers[0].identifier: props.book.volumeInfo.industryIdentifiers[1].identifier)}>I Want This Book</button>
                     <button onClick={handleIsbn}>I have this book</button>
                 </div>
             </div>

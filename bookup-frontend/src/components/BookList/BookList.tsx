@@ -4,7 +4,7 @@ import { BookMap } from "../BookMap/BookMap";
 import { useEffect, useState } from "react";
 import { Buser } from "../../models/User";
 import { updateUser } from "../../services/bookSearchService/userService";
-
+import { getUsers } from '../../services/bookSearchService/userService';
 
 export function BookList(props: {bookList: any[], user:Buser}) {
 
@@ -12,6 +12,7 @@ export function BookList(props: {bookList: any[], user:Buser}) {
     const [showBook, setShowBook] = useState<any>({});
     const [showMap, setShowMap] = useState(false);
     const [isbn, setIsbn] = useState("");
+    const [isbnUsers, setIsbnUsers] = useState<Buser[]>([]);
     
     let userBooks = Object.assign(props.user.books);
 
@@ -30,7 +31,19 @@ export function BookList(props: {bookList: any[], user:Buser}) {
         }
     }
 
-    const showBookLocation = () => {
+    //finds all users that are not me
+  async function getOtherUsers(isbn: string){
+    console.log(JSON.stringify(props.user))
+    let allUsers = await getUsers();
+    let otherUsers = allUsers.filter( u => u.email != props.user.email);
+    return otherUsers.filter( u => u.books.includes(isbn));
+  }
+
+    const showBookLocation = async (isbn: string) => {
+        if(isbn != "") {
+            let isbnUsers = await getOtherUsers(isbn);
+            setIsbnUsers(isbnUsers);
+        }
         setShowMap(!showMap);
     }
 
@@ -51,7 +64,7 @@ export function BookList(props: {bookList: any[], user:Buser}) {
         console.log("showPopUp" +  showBtnPopUp);        
     },[showBtnPopUp])
      
-    let mapCon = showMap ?  <BookMap user={props.user} closeMap={showBookLocation}></BookMap> : "";
+    let mapCon = showMap ?  <BookMap user={props.user} closeMap={(isbn) => showBookLocation(isbn)} isbnUsers={isbnUsers}></BookMap> : "";
 
     return (
        <div> 
@@ -71,7 +84,7 @@ export function BookList(props: {bookList: any[], user:Buser}) {
 
             }
             </div>
-            <BookCard book={showBook} showBtnPopUp={showBtnPopUp} onClose={handleHideBtnPopUp} showBookLocation={showBookLocation} addBook={(isbn) => addBook(isbn)} isbn={() => setIsbn(isbn)}/>
+            <BookCard book={showBook} showBtnPopUp={showBtnPopUp} onClose={handleHideBtnPopUp} showBookLocation={(isbn) => showBookLocation(isbn)} addBook={(isbn) => addBook(isbn)} isbn={() => setIsbn(isbn)}/>
         </div>
     )
 }
