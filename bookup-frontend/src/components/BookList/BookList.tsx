@@ -84,7 +84,7 @@ export function BookList(props: {bookList: any[], user:Buser}) {
 
             }
             </div>
-            <BookCard book={showBook} showBtnPopUp={showBtnPopUp} onClose={handleHideBtnPopUp} showBookLocation={(isbn) => showBookLocation(isbn)} addBook={(isbn) => addBook(isbn)} isbn={() => setIsbn(isbn)}/>
+            <BookCard book={showBook} user={props.user} showBtnPopUp={showBtnPopUp} onClose={handleHideBtnPopUp} showBookLocation={(isbn) => showBookLocation(isbn)} addBook={(isbn) => addBook(isbn)} isbn={() => setIsbn(isbn)}/>
         </div>
     )
 }

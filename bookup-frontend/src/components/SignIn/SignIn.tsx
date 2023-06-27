@@ -62,6 +62,7 @@ export function SignIn(props: { activeUser: (activeUser: Buser) => void }) {
                 <label>Enter your zip to find your next book</label>
                 <input type="text" value={zipcode} onChange={(e) => setZipcode(e.target.value)} />
                 <button onClick={handleAddUser}>Submit</button>
+                <button onClick={signOut}>Sign Out</button>
             </form>
         )
     } else if (user && isLoggedIn) {
