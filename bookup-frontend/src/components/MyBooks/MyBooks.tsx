@@ -5,7 +5,6 @@ import { getBook } from "../../services/bookSearchService/bookSearchService";
 import { BookList } from "../BookList/BookList";
 import { BookCard } from "../BookCard/BookCard";
 import "./MyBooks.css";
-import { getMessageById, getMessagesByUserBookID } from "../../services/messageService/messageService";
 
 export function MyBooks(props: {currentUser: Buser}) {
 
