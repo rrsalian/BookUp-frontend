@@ -3,8 +3,8 @@ import "./BookList.css"
 import { BookMap } from "../BookMap/BookMap";
 import { useEffect, useState } from "react";
 import { Buser } from "../../models/User";
-import { updateUser } from "../../services/bookSearchService/userService";
-import { getUsers } from '../../services/bookSearchService/userService';
+import { updateUser } from "../../services/userService/userService";
+import { getUsers } from '../../services/userService/userService';
 
 export function BookList(props: {bookList: any[], user:Buser}) {
 

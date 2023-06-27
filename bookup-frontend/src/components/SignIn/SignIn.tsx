@@ -6,7 +6,7 @@ import "./SignIn.css"
 import bookUserPhoto from "../../images/5738803.png"
 import { Buser } from "../../models/User";
 import { USZip, zipList } from "../../models/USZip";
-import { addUser, getUserByEmail } from "../../services/bookSearchService/userService";
+import { addUser, getUserByEmail } from "../../services/userService/userService";
 import { Link } from "react-router-dom";
 import googleLogo from "../../images/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png"
 
@@ -25,28 +25,28 @@ export function SignIn(props: { activeUser: (activeUser: Buser) => void }) {
     const toggleDropDown = () => dropdown ? setDropDown(false) : setDropDown(true)
 
     function handleAddUser(e: FormEvent) {
-        //e.preventDefault();
+        e.preventDefault();
         const myZip = zipList.filter(zip => zip.zip === zipcode);
+        if (myZip.length === 0) {
+            alert("Please enter a valid zip Code");
+        } else {
+            const newBuser: Buser = {
+                uid: user!.uid,
+                email: user!.email!,
+                zipcode: { zip: myZip[0].zip, lat: myZip[0].lat, lon: myZip[0].lon },
+                books: []
+            }
 
-        const newBuser: Buser = {
-            uid: user!.uid,
-            email: user!.email!,
-            zipcode: { zip: myZip[0].zip, lat: myZip[0].lat, lon: myZip[0].lon },
-            books: []
-
+            addUser(newBuser)
+            setZipcode("");
+            setBuser(newBuser);
+            setIsLoggedIn(true);
         }
-
-        addUser(newBuser)
-        setZipcode("");
-        setBuser(newBuser);
     }
 
     useEffect(() => {
         const foundUser = getUserByEmail(user?.email!).then((res) => { setIsLoggedIn(res !== null); setBuser(res); props.activeUser(res!) })
         console.log(foundUser);
-
-
-
     }, [user])
 
     async function checkLogin() {
@@ -65,7 +65,9 @@ export function SignIn(props: { activeUser: (activeUser: Buser) => void }) {
                 <button onClick={signOut}>Sign Out</button>
             </form>
         )
-    } else if (user && isLoggedIn) {
+    }
+
+    if (user && isLoggedIn) {
         return (
             <div>
                 <div>

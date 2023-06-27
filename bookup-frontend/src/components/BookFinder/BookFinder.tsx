@@ -10,20 +10,9 @@ export function BookFinder(props: {user:Buser}) {
     const [search, setSearch] = useState("");
     const [bookData, setBookData] = useState([])
 
-    /* useEffect(() => {
-
-        getBooks(search).then(books => {
-            setBookData(books.data.items);
-            console.log(books.data.items);
-    
-        });
-    
-    }, []); */
-
-
-    function handleBookSearch(e: FormEvent) {
+    async function handleBookSearch(e: FormEvent) {
         e.preventDefault();
-        getBooks(search).then(books => {
+        await getBooks(search).then(books => {
             setBookData(books.data.items);
             console.log(books.data.items)
 
