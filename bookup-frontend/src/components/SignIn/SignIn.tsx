@@ -55,7 +55,6 @@ export function SignIn(props: { activeUser: (activeUser: Buser) => void }) {
         setIsLoggedIn(res !== null && bUser !== null)
     }
 
-    let test = <div></div>
     if (user && !isLoggedIn) {
         return (
             <form>

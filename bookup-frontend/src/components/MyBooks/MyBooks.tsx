@@ -5,31 +5,24 @@ import { getBook } from "../../services/bookSearchService/bookSearchService";
 import { BookList } from "../BookList/BookList";
 import { BookCard } from "../BookCard/BookCard";
 import "./MyBooks.css";
+import { getMessageById, getMessagesByUserBookID } from "../../services/messageService/messageService";
 
 export function MyBooks(props: {currentUser: Buser}) {
 
     const [userBookList, setUserBookList] = useState<any[]>([]);
-    //let bookList: any[] = []
-    
+        
     async function getUserBookList( bUser: Buser ) {
         let bArray: any[] = [];
 
-        for (let book of bUser.books) {
-                
-            await getBook(book).then( book => {
-                
-                bArray = [ ...bArray , ...book.data.items ];                
-            })
-            
-            setUserBookList(bArray);
-            console.log(bArray);
+        for (let book of bUser.books) {                
+            await getBook(book).then( book => bArray = [ ...bArray , ...book.data.items ])
+            setUserBookList(bArray);            
         }
     }
 
     useEffect(() => {        
         console.log("useEffect");
-        getUserBookList(props.currentUser);
-        
+        getUserBookList(props.currentUser);        
     },[props.currentUser]);
     
   
@@ -50,7 +43,7 @@ export function MyBooks(props: {currentUser: Buser}) {
                         <p>ISBN: {book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? book.volumeInfo.industryIdentifiers[0].identifier: book.volumeInfo.industryIdentifiers[1].identifier}</p>
                     </div>)
                     }
-                </div>  
+                </div>
             </div>
         </div>
     )
