@@ -17,6 +17,11 @@ export async function getUserByEmail(email: string): Promise<Buser> {
     return response.data;
 }
 
+export async function getUserByIsbn(isbn: string): Promise<Buser> {
+    const response = await axios.get<Buser>(`https://us-central1-bookup-4c4c7.cloudfunctions.net/api/users/book/${isbn}`);
+    return response.data;
+}
+
 export const addUser = async (user: Buser): Promise<Buser> => {
     return (await axios.post('https://us-central1-bookup-4c4c7.cloudfunctions.net/api/users', user)).data;
 };
