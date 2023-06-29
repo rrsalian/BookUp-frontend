@@ -2,10 +2,39 @@ import { MapContainer, TileLayer, Marker, Popup, Polyline, SVGOverlay } from 're
 import { LatLngTuple, DivIcon, latLng } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Buser } from '../../models/User';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import "./BookMap.css"
 
 export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, isbnUsers: Buser[] }) {
+
+  interface BookCoord {
+    name: string;
+    image?: DivIcon;
+    zip: string;
+    latLon: LatLngTuple;
+  }
+
+  let myPosition: BookCoord = {
+    name: "Me",
+    zip: props.user.zipcode.zip,
+    latLon: [props.user.zipcode.lat, props.user.zipcode.lon]
+  }
+
+    //Array of Other Books
+    let booksCoords: BookCoord[] = [];
+
+    props.isbnUsers.forEach(u => {
+      booksCoords.push({
+        name: u.email,
+        image: new DivIcon({html: `<img class=map-user-profile-picture src=${u.img} alt=user profile picture></img>`}),
+        zip: u.zipcode.zip,
+        latLon: [u.zipcode.lat, u.zipcode.lon]
+      });
+    });
+
+  const firstBookCoord = booksCoords.length > 0 ? booksCoords[0] : myPosition;
+
+  const [polyLinePosition, setPolylinePosition] = useState<LatLngTuple[]>([myPosition.latLon, firstBookCoord.latLon]);
 
   function getMidpoint(latLon1: LatLngTuple, latLon2: LatLngTuple) : LatLngTuple {
     if(latLon2 == null) {
@@ -31,44 +60,12 @@ export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, 
     return Math.round(ln.distanceTo(latLng(latLon2[0], latLon2[1])) / 1000 * .62 * 100) / 100;
   }
 
-  //Array of Other Books
-  let booksCoords: BookCoord[] = [];
-
-  props.isbnUsers.forEach(u => {
-    booksCoords.push({
-      name: u.email,
-      image: new DivIcon({html: `<img class=map-user-profile-picture src=${u.img} alt=user profile picture></img>`}),
-      zip: u.zipcode.zip,
-      latLon: [u.zipcode.lat, u.zipcode.lon]
-    });
-  });
+  function setCurrentBookCoord(coord: BookCoord){
+    setPolylinePosition([myPosition.latLon, coord.latLon]);
+  }
 
   console.log("booksCoords " + JSON.stringify(booksCoords));
-  
-  
-  interface BookCoord {
-    name: string;
-    image?: DivIcon;
-    zip: string;
-    latLon: LatLngTuple;
-  }
-  
-  let myPosition: BookCoord = {
-    name: "Me",
-    zip: props.user.zipcode.zip,
-    latLon: [props.user.zipcode.lat, props.user.zipcode.lon]
-  }
-  
-  let polyLinePosition = [
-    myPosition.latLon
-  ];
 
-  booksCoords.forEach(b => {
-    JSON.stringify(b.latLon);
-    
-    polyLinePosition.push(b.latLon);
-  });
-  
   const iconImage: DivIcon = new DivIcon({ html: "<img src='https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png' />" });
   const midPointStyle = "background-color: #ff0000; color: #ffffff; font-weight: bold; border-radius: 5px; width: 100px; height: 20px; margin-left: -50px; margin-top: -10px; border: 1px solid black;"
   
@@ -83,7 +80,7 @@ export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, 
             </Popup>
           </Marker>
           {booksCoords.map(b => (
-            <Marker position={b.latLon} icon={b.image != null ? b.image : iconImage}>
+            <Marker position={b.latLon} icon={b.image != null ? b.image : iconImage} eventHandlers={{ click: () => setCurrentBookCoord(b) }}>
               <Popup>
                 {b.name}
               </Popup>
