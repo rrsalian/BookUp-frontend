@@ -3,6 +3,7 @@ import { LatLngTuple, DivIcon, latLng } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Buser } from '../../models/User';
 import { useEffect } from 'react';
+import "./BookMap.css"
 
 export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, isbnUsers: Buser[] }) {
 
@@ -23,7 +24,10 @@ export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, 
     if(latLon2 == null) {
       return 0;
     }
+    console.log("latLon1" + latLon1);
+    
     let ln = latLng(latLon1[0], latLon1[1]);
+    //let ln = latLng(42.758215, -83.743683);
     return Math.round(ln.distanceTo(latLng(latLon2[0], latLon2[1])) / 1000 * .62 * 100) / 100;
   }
 
@@ -33,11 +37,14 @@ export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, 
   props.isbnUsers.forEach(u => {
     booksCoords.push({
       name: u.email,
-      image: new DivIcon({html: "<div>IMAGE GOES HERE</div>"}),
+      image: new DivIcon({html: `<img class=map-user-profile-picture src=${u.img} alt=user profile picture></img>`}),
       zip: u.zipcode.zip,
       latLon: [u.zipcode.lat, u.zipcode.lon]
     });
   });
+
+  console.log("booksCoords " + JSON.stringify(booksCoords));
+  
   
   interface BookCoord {
     name: string;
@@ -57,6 +64,8 @@ export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, 
   ];
 
   booksCoords.forEach(b => {
+    JSON.stringify(b.latLon);
+    
     polyLinePosition.push(b.latLon);
   });
   

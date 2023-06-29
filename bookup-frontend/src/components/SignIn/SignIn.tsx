@@ -9,6 +9,7 @@ import { USZip, zipList } from "../../models/USZip";
 import { addUser, getUserByEmail } from "../../services/userService/userService";
 import { Link } from "react-router-dom";
 import googleLogo from "../../images/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png"
+import bookUpLogo from "../../images/guilded_image_ca1df0acf51f97f657574c81c890a1e5.png"
 
 export function SignIn(props: { activeUser: (activeUser: Buser) => void }) {
 
@@ -34,7 +35,8 @@ export function SignIn(props: { activeUser: (activeUser: Buser) => void }) {
                 uid: user!.uid,
                 email: user!.email!,
                 zipcode: { zip: myZip[0].zip, lat: myZip[0].lat, lon: myZip[0].lon },
-                books: []
+                books: [],
+                img: user!.photoURL!
             }
 
             addUser(newBuser)
@@ -45,6 +47,8 @@ export function SignIn(props: { activeUser: (activeUser: Buser) => void }) {
     }
 
     useEffect(() => {
+        console.log(user?.photoURL);
+        
         const foundUser = getUserByEmail(user?.email!).then((res) => { setIsLoggedIn(res !== null); setBuser(res); props.activeUser(res!) })
         console.log(foundUser);
     }, [user])
@@ -74,7 +78,7 @@ export function SignIn(props: { activeUser: (activeUser: Buser) => void }) {
                         <header className="header">
                             <nav className="navbar">
                                 <div>
-                                    <h1 className="logo">BookUp</h1>
+                                    <img src={bookUpLogo} className="logo"></img>
                                 </div>
                                 <div>
 

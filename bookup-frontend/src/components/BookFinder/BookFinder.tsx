@@ -14,7 +14,6 @@ export function BookFinder(props: {user:Buser}) {
         e.preventDefault();
         await getBooks(search).then(books => {
             setBookData(books.data.items);
-            console.log(books.data.items)
 
         });
 

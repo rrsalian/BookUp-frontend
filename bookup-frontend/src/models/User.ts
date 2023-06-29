@@ -5,5 +5,6 @@ export interface Buser {
     uid: string,
     email: string,
     zipcode: USZip,
-    books: string[]
+    books: string[],
+    img?: string
 }

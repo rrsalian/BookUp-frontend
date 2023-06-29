@@ -3,7 +3,7 @@ import "./BookList.css"
 import { BookMap } from "../BookMap/BookMap";
 import { useEffect, useState } from "react";
 import { Buser } from "../../models/User";
-import { getUsers, updateUser } from '../../services/userService/userService';
+import { getUserByIsbn, getUsers, updateUser } from '../../services/userService/userService';
 
 export function BookList(props: {bookList: any[], user:Buser}) {
 
@@ -33,9 +33,14 @@ export function BookList(props: {bookList: any[], user:Buser}) {
     //finds all users that are not me
   async function getOtherUsers(isbn: string){
     console.log(JSON.stringify(props.user))
-    let allUsers = await getUsers();
-    let otherUsers = allUsers.filter( u => u.email != props.user.email);
-    return otherUsers.filter( u => u.books.includes(isbn));
+    let allUsers = await getUserByIsbn(isbn);
+    
+    console.log("hello: " + JSON.stringify(allUsers));
+    
+    //let otherUsers = allUsers.filter( u => u.email !== props.user.email);
+    //console.log(otherUsers)
+    //allUsers.filter( u => u.books.includes(isbn));
+    return allUsers
   }
 
     const showBookLocation = async (isbn: string) => {
