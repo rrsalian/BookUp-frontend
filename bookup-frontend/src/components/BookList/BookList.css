@@ -5,3 +5,20 @@
     flex-wrap: wrap;
     justify-content: center;
 }
+
+@media only screen and (max-width: 480px) {
+
+    .booklist {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .bookcard {
+        width: 90px;
+    }
+
+    .book-image {
+        width: 100px;
+    }
+}
+

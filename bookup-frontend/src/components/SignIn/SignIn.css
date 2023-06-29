@@ -1,11 +1,11 @@
 
 .header {
-    width: 100%;
+    
     padding: 10px;
     margin-bottom: 20px;
     border-bottom: 2px solid #143642a2;
     background-color: #9abcd5;
-    box-shadow: 1px 1px 7px 3px #14364266;
+/*     box-shadow: 1px 1px 7px 3px #14364266; */
 }
 
 .navbar {
@@ -34,7 +34,7 @@
 }
 
 .user-profile {
-    margin-right: 20px;
+    
     align-self: center;
 }
 
@@ -61,7 +61,7 @@
     border-bottom: 2px solid #143642;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-    left: 83%;
+    left: 75vw;
     top: 120%;
     z-index: 200;
 }
@@ -84,7 +84,7 @@
 
 .sign-in-box {
     width: 30%;
-    height: 30%;
+    
     background-color: #9abcd5;
     margin: 40px auto;
     padding: 20px;
@@ -132,4 +132,94 @@
     width: 50%;
     text-align: justify;
     margin: 10px;
+}
+
+@media only screen and (max-width: 480px) {
+    .logo {
+    
+        width: 200px;
+    }
+
+    .dropdown {
+        margin: 0;
+        padding: 10px;
+        width: 200px;
+        position: absolute;
+        border-top: none;
+        background-color: #fff;
+        border-right: 2px solid #143642;
+        border-left: 2px solid #143642;
+        border-bottom: 2px solid #143642;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        left: 50%;
+        top: 120%;
+        z-index: 200;
+    }
+
+    .sign-in-logo {
+        font-size: 3rem;
+    }
+    
+    .sign-in-button {
+        padding: 5px;
+        font-size: .8rem;
+        margin-top: 10px;
+        background-color: #005689;
+        color: #eeeeee;
+        border-top: 3px solid #528ba2;
+        border-right: 3px solid #386373;
+        border-left: 3px solid #294d5a;
+        border-bottom: 3px solid #0e272f;
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+    }
+    
+    .google-logo {
+        width: 30px;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sign-in-caption-container {
+        font-size: .6rem;
+        
+    }
+
+    .sign-in-caption {
+        text-align: justify;
+    }
+
+    .sign-in-logo {
+        font-size: 2rem;
+    }
+    
+}
+
+@media only screen and (max-width: 768px) {
+    .logo {
+    
+        width: 200px;
+    }
+
+    .dropdown {
+        margin: 0;
+        padding: 10px;
+        width: 200px;
+        position: absolute;
+        border-top: none;
+        background-color: #fff;
+        border-right: 2px solid #143642;
+        border-left: 2px solid #143642;
+        border-bottom: 2px solid #143642;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        left: 50%;
+        top: 120%;
+        z-index: 200;
+    }
 }

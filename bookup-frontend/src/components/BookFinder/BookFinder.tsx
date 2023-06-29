@@ -21,13 +21,16 @@ export function BookFinder(props: {user:Buser}) {
 
     return (
         <div>
+            <div className="bookfinder-container">
             <h2 className="find-a-book">Find a Book</h2>
             <form onSubmit={handleBookSearch}>
                 <input className="book-search" type="text" placeholder="enter a book" value={search} onChange={e => setSearch(e.target.value)} />
                 <div>
                     <button className="search-btn">Search</button>
                 </div>
+                
             </form>
+            </div>
             <BookList bookList={bookData} user={props.user} />
         </div>
     )
