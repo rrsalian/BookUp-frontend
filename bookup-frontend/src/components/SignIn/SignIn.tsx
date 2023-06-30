@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import googleLogo from "../../images/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png"
 import bookUpLogo from "../../images/guilded_image_ca1df0acf51f97f657574c81c890a1e5.png"
 
-export function SignIn(props: { activeUser: (activeUser: Buser) => void }) {
+export function SignIn(props: { activeUser: (activeUser: Buser) => void, chatUser: (chatUser: Buser) => void }) {
 
     const { user } = useContext(AuthContext);
 
@@ -102,7 +102,7 @@ export function SignIn(props: { activeUser: (activeUser: Buser) => void }) {
                             </nav>
                         </header>
 
-                        <BookFinder user={bUser!} />
+                        <BookFinder user={bUser!} chatUser={chatUser => props.chatUser(chatUser)} />
                     </div>
                 </div>
             </div>

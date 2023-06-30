@@ -5,7 +5,7 @@ import { BookList } from "../BookList/BookList";
 import "./BookFinder.css"
 import { Buser } from "../../models/User";
 
-export function BookFinder(props: {user:Buser}) {
+export function BookFinder(props: { user: Buser, chatUser: (chatUser: Buser) => void }) {
 
     const [search, setSearch] = useState("");
     const [bookData, setBookData] = useState([])
@@ -16,22 +16,26 @@ export function BookFinder(props: {user:Buser}) {
             setBookData(books.data.items);
 
         });
+    }
 
+    function setOtherUser(bUser: Buser) {
+        console.log("in BookFinder" + bUser);
+        props.chatUser(bUser); 
     }
 
     return (
         <div>
             <div className="bookfinder-container">
-            <h2 className="find-a-book">Find a Book</h2>
-            <form onSubmit={handleBookSearch}>
-                <input className="book-search" type="text" placeholder="enter a book" value={search} onChange={e => setSearch(e.target.value)} />
-                <div>
-                    <button className="search-btn">Search</button>
-                </div>
-                
-            </form>
+                <h2 className="find-a-book">Find a Book</h2>
+                <form onSubmit={handleBookSearch}>
+                    <input className="book-search" type="text" placeholder="enter a book" value={search} onChange={e => setSearch(e.target.value)} />
+                    <div>
+                        <button className="search-btn">Search</button>
+                    </div>
+
+                </form>
             </div>
-            <BookList bookList={bookData} user={props.user} />
+            <BookList bookList={bookData} user={props.user} chatUser={chatUser => setOtherUser(chatUser)} />
         </div>
     )
 }

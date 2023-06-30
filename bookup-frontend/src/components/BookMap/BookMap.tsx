@@ -4,8 +4,9 @@ import 'leaflet/dist/leaflet.css';
 import { Buser } from '../../models/User';
 import { useEffect, useState } from 'react';
 import "./BookMap.css"
+import { Link } from 'react-router-dom';
 
-export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, isbnUsers: Buser[] }) {
+export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, isbnUsers: Buser[], chatUser : (chatUser: Buser) => void }) {
 
   interface BookCoord {
     name: string;
@@ -22,6 +23,7 @@ export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, 
 
     //Array of Other Books
     let booksCoords: BookCoord[] = [];
+    let coordUsers: Buser[] = [];
 
     props.isbnUsers.forEach(u => {
       booksCoords.push({
@@ -30,6 +32,8 @@ export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, 
         zip: u.zipcode.zip,
         latLon: [u.zipcode.lat, u.zipcode.lon]
       });
+
+      coordUsers.push(u);
     });
 
   const firstBookCoord = booksCoords.length > 0 ? booksCoords[0] : myPosition;
@@ -64,6 +68,11 @@ export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, 
     setPolylinePosition([myPosition.latLon, coord.latLon]);
   }
 
+  function setOtherUser (bUser:Buser) {
+    console.log(bUser);
+    props.chatUser(bUser);    
+  }
+
   console.log("booksCoords " + JSON.stringify(booksCoords));
 
   const iconImage: DivIcon = new DivIcon({ html: "<img src='https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png' />" });
@@ -79,10 +88,11 @@ export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, 
               ME!
             </Popup>
           </Marker>
-          {booksCoords.map(b => (
+          {booksCoords.map( (b, index) => (
             <Marker position={b.latLon} icon={b.image != null ? b.image : iconImage} eventHandlers={{ click: () => setCurrentBookCoord(b) }}>
               <Popup>
                 {b.name}
+                <button onClick={() => {setOtherUser(coordUsers[index])}} className="chat"><Link to="/chat">Wanna chat</Link></button>
               </Popup>
             </Marker>
           ))}

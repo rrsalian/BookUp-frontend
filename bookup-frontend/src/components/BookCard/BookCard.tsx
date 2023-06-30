@@ -18,7 +18,7 @@ export function BookCard(props: { book: any, user: Buser, showBtnPopUp:boolean, 
     if (props.showBtnPopUp) {
         return (
             <div className="popup-container">
-                <div className={props.showBtnPopUp? "book-popup":"hidden"} >
+                <div className="book-popup">
                     <button onClick={() => props.onClose()}>close</button>
                     <img className="book-image" src={props.book.volumeInfo.imageLinks?.thumbnail} alt="" />
                     <p>Title: {props.book.volumeInfo.title}</p>
