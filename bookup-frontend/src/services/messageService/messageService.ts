@@ -30,7 +30,7 @@ export async function getAllMessages(): Promise<Message[]> {
 export async function postMessage(message: Message): Promise<Message> {
     const response = await axios
         .post('https://us-central1-bookup-4c4c7.cloudfunctions.net/api/messages', message);
-     return response.data;
+    return response.data;
 }
 
 export async function UpdateMessage(message: Message, _id: string): Promise<Message> {

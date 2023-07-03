@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 import { Buser } from "../../models/User";
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getBook } from "../../services/bookSearchService/bookSearchService";
-import { BookList } from "../BookList/BookList";
-import { BookCard } from "../BookCard/BookCard";
 import "./MyBooks.css";
+import { Header } from "../Header/Header";
 
 export function MyBooks(props: {currentUser: Buser}) {
 
@@ -27,11 +26,11 @@ export function MyBooks(props: {currentUser: Buser}) {
   
     return (
         <div>
-            <p><Link to="/">Back to home</Link></p>
+            <Header></Header>            
             <div>
                 <h2>My Books</h2>
                 <div className="mybooks">
-                    {                        
+                    {
                     userBookList.map( (book ,index) => 
                     <div className="book" key={book.id}>
                         <img  className="book-image" src={book.volumeInfo.imageLinks?.thumbnail!} alt="" />

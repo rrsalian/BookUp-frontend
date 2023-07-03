@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { MyBooks } from './components/MyBooks/MyBooks';
 import { Buser } from './models/User';
 import { Chat } from './components/Chat/Chat';
+import { Header } from './components/Header/Header';
+import { ChatHistory } from './components/ChatHistory/ChatHistory';
 
 function App() {
 
@@ -23,6 +25,7 @@ function App() {
         <Route path='/' element={<SignIn activeUser={active => setCurrUser(active)} chatUser={chatUser => setChatUser(chatUser)}  chatUserIsbn={ chatUserIsbn => setChatUserIsbn(chatUserIsbn) }  />} />
         <Route path='/mybooks' element={<MyBooks currentUser={currUser!}/>} />
         <Route path='/chat' element={<Chat currentUser={currUser!} chatUser={chatUser!} chatUserIsbn={chatUserIsbn!}/>}/>
+        <Route path='/mychathistory' element={<ChatHistory currentUser={currUser!}></ChatHistory>} />
         </Routes>
       </Router>
     </div>

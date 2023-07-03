@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { Buser } from "../../models/User";
 import "./Chat.css";
 import { Message } from "../../models/Message";
-import { getMessagesByUserBookID } from "../../services/messageService/messageService";
+import { getMessagesByUserBookID, postMessage } from "../../services/messageService/messageService";
+import { Header } from "../Header/Header";
+import { ChatHistory } from "../ChatHistory/ChatHistory"
 
 export function Chat(props: { currentUser: Buser, chatUser: Buser, chatUserIsbn: string }) {
 
@@ -17,30 +19,38 @@ export function Chat(props: { currentUser: Buser, chatUser: Buser, chatUserIsbn:
             getUserMessages(isbn, me._id!, other._id!);              
     },[])
 
+    function scrollToBottom() {
+        const chat = document.getElementById("chatList")!;
+        chat.scrollTop = chat?.scrollHeight;
+      };
+
     async function getUserMessages(isbn: string, user1_id: string, user2_id: string) {
         const userMessages = await getMessagesByUserBookID(isbn, user1_id, user2_id);        
         setMessages(userMessages);
-        
     }
 
     async function handleSubmit (e: any) {
         e.preventdefault;
         const date = new Date(); // Or the date you'd like converted.
-        const isoDateTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString();
+        const isoDateTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
         
-        let initiator = (messages[0]) ? messages[0].initiator : props.currentUser._id;
+        let initiator:string = (messages[0]) ? messages[0].initiator!: props.currentUser._id!;
                 
-        const newMessage = { "createdAt": isoDateTime, 
-                       "initiator": initiator,
-                       "isbn": isbn,
-                       "receiverId": other._id,
-                       "senderId": me._id,
-                       "state": "",
-                       "swapToIsbn": "",                       
-                       "message": newText
-                    }            
-        const response = postMessage(newMessage);
-        console.log(response);
+        const newMessage:Message = { "createdAt": isoDateTime, 
+                                     "initiator": initiator,
+                                     "isbn": isbn,
+                                     "receiverId": other._id!,
+                                     "senderId": me._id!,
+                                     "state": "",
+                                     "swapToIsbn": "",                       
+                                     "message": newText
+                                    };
+        
+        await postMessage(newMessage);
+        const newMessages: Message[] = [ ...messages, newMessage];
+        setMessages( newMessages );
+        setNewText("");        
+        scrollToBottom();
       };
 
       const handleChange = (e: any) => {
@@ -48,14 +58,13 @@ export function Chat(props: { currentUser: Buser, chatUser: Buser, chatUserIsbn:
       };
 
     return (
-        <div className="chatwrapper">
-            <div className="chatSpace">
-                <div className="chatusers">
-                    {other.email}
-                </div>
+        <div className="main">
+            <Header></Header>
+            <ChatHistory currentUser={me}></ChatHistory>
+            <div className="chatSpace">                
                 <div className="chatWindow">
                     <ul className="chat" id="chatList">
-                        <h2>Chat Messages</h2>          
+                        <h3>Chat Messages</h3>
                         {                            
                             messages.map(message =>
                             <div key={message._id}>
@@ -67,11 +76,11 @@ export function Chat(props: { currentUser: Buser, chatUser: Buser, chatUserIsbn:
                                             <div>{message.message}</div>                                            
                                         </div>
                                     </li>
-                                ) : 
+                                ) :
                                 (
                                     <li className="other">
                                         <div className="msg">
-                                           <p>Other:</p>
+                                           <p>{other.email}</p>
                                             <div className="message">{message.message}</div>
                                         </div>
                                     </li>
@@ -81,7 +90,7 @@ export function Chat(props: { currentUser: Buser, chatUser: Buser, chatUserIsbn:
                         }
                     </ul>
                     <div className="chatInputWrapper">                    
-                        <input className="textarea input" type="text" placeholder="Enter your message..."
+                        <input className="textarea input" type="text" value={newText} placeholder="Enter your message..."
                         onChange={handleChange}/>                        
                         <button onClick={handleSubmit}>Send</button>
                     </div>
