@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { Buser } from "../../models/User";
-import "./Chat.css";
+import "./ViewChat.css";
 import { Message } from "../../models/Message";
 import { getMessagesByUserBookID, postMessage } from "../../services/messageService/messageService";
-import { Header } from "../Header/Header";
-import { ChatHistory } from "../ChatHistory/ChatHistory"
 
 export function Chat(props: { currentUser: Buser, chatUser: Buser, chatUserIsbn: string }) {
 
@@ -59,8 +57,7 @@ export function Chat(props: { currentUser: Buser, chatUser: Buser, chatUserIsbn:
       };
 
     return (
-        <div className="main">            
-            <ChatHistory currentUser={me}></ChatHistory>
+        <div className="main">
             <div className="chatSpace">                
                 <div className="chatWindow">
                     <ul className="chat" id="chatList">
