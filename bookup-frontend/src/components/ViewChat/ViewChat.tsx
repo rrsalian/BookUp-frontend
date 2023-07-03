@@ -4,17 +4,17 @@ import "./ViewChat.css";
 import { Message } from "../../models/Message";
 import { getMessagesByUserBookID, postMessage } from "../../services/messageService/messageService";
 
-export function Chat(props: { currentUser: Buser, chatUser: Buser, chatUserIsbn: string }) {
+export function ViewChat(props: { currentUser: Buser, chatUser: Buser, isbn: string }) {
 
     const [me, setme] = useState<Buser>(props.currentUser);
     const [other, setOther] = useState<Buser>(props.chatUser);
-    const [isbn, setIsbn] = useState(props.chatUserIsbn);
+    const [isbn, setIsbn] = useState(props.isbn);
     const [messages, setMessages] = useState<Message[]>([]);
     const [newText, setNewText] = useState("");
 
-    useEffect(() => {        
+    useEffect(() => {
         if (me)
-            getUserMessages(isbn, me._id!, other._id!);              
+            getUserMessages(isbn, me._id!, other._id!);
     },[])
 
     function scrollToBottom() {
@@ -88,7 +88,7 @@ export function Chat(props: { currentUser: Buser, chatUser: Buser, chatUserIsbn:
                     </ul>
                     <div className="chatInputWrapper">                    
                         <input className="textarea input" type="text" value={newText} placeholder="Enter your message..."
-                        onChange={handleChange}/>                        
+                        onChange={handleChange}/>
                         <button onClick={handleSubmit}>Send</button>
                     </div>
                 </div>

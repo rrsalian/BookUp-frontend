@@ -5,6 +5,8 @@ import { Buser } from '../../models/User';
 import { useEffect, useState } from 'react';
 import "./BookMap.css"
 import { Link } from 'react-router-dom';
+import { ViewChat } from "../ViewChat/ViewChat"
+import ReactDOM from 'react-dom';
 
 export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, isbnUsers: Buser[], chatUser: (chatUser: Buser) => void, chatUserIsbn: string }) {
 
@@ -70,7 +72,7 @@ export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, 
 
   function setOtherUser(bUser: Buser) {
     console.log(bUser);
-    props.chatUser(bUser);
+    props.chatUser(bUser);    
   }
 
   console.log("booksCoords " + JSON.stringify(booksCoords));
@@ -92,7 +94,7 @@ export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, 
           <Marker position={b.latLon} icon={b.image != null ? b.image : iconImage} eventHandlers={{ click: () => setCurrentBookCoord(b) }}>
             <Popup>
               {b.name}
-              <button onClick={() => { setOtherUser(coordUsers[index]) }} className="chat"><Link to="/chat">Wanna chat</Link></button>
+              <button onClick={() => {setOtherUser(coordUsers[index])}} className="chat"><Link to="/chat">Wanna chat</Link></button>
             </Popup>
           </Marker>
         ))}

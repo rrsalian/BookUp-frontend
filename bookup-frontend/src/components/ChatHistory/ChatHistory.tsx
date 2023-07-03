@@ -4,12 +4,14 @@ import { getMessagesByUser } from "../../services/messageService/messageService"
 import { Message } from "../../models/Message";
 import { getUserById } from "../../services/userService/userService";
 import { Header } from "../Header/Header";
+import { ViewChat } from "../ViewChat/ViewChat";
 
 export function ChatHistory(props: { currentUser: Buser }) {
 
     interface UserMessageInfo {
+        id: number;
         msginfo: Message;
-        useremail: string;
+        otheruser: Buser;
     }
 
     let myUserMsgInfo: UserMessageInfo[] = [];
@@ -20,13 +22,28 @@ export function ChatHistory(props: { currentUser: Buser }) {
     const [othersInvites, setOthersInvites] = useState<Message[]>([]);
     const [myMsgInfo, setUserMsgInfo] = useState<UserMessageInfo[]>([])
     const [otherMsgInfo, setOtherMsgInfo] = useState<UserMessageInfo[]>([])
+    const [chatData, setChatData] = useState<UserMessageInfo>();
+    const [goChat, setGoChat] = useState(false);
+    const [closeChat, setCloseChat] = useState(false);
+
 
     useEffect(() => {
         console.log("in useEffect");
         getUserChatHistory(props.currentUser);
     }, [allInvites.length])
 
-    async function getUserChatHistory(user: Buser) {        
+
+    function setChatSettingsData(usrmsginfo: UserMessageInfo) {
+        if (chatData?.id !== usrmsginfo.id) {
+            setCloseChat(true);
+        }    
+        setChatData(usrmsginfo);
+        console.log(usrmsginfo);
+        setGoChat(true);
+    }
+
+    async function getUserChatHistory(user: Buser) {
+        let idCount = 0;
         const myChatHistory: Message[] = await getMessagesByUser(user._id!);
         console.log(myChatHistory);
         const getAllInvites = myChatHistory.filter((message) => message.state === "invite")
@@ -35,7 +52,8 @@ export function ChatHistory(props: { currentUser: Buser }) {
         
         for (const myInvite of myInvites) {
             const getOtherUser: Buser = await getUserById(myInvite.receiverId);
-            myUserMsgInfo.push({ "msginfo": myInvite, "useremail": getOtherUser.email });
+            myUserMsgInfo.push({"id": idCount, "msginfo": myInvite, "otheruser": getOtherUser });
+            idCount = idCount + 1;
             console.log("MyUser " + JSON.stringify(myUserMsgInfo));
         }
         
@@ -45,7 +63,8 @@ export function ChatHistory(props: { currentUser: Buser }) {
 
         for (const OthInvite of othersInvites) {
             const getOtherUser: Buser = await getUserById(OthInvite.senderId);
-            OtherUserMsgInfo.push({ "msginfo": OthInvite, "useremail": getOtherUser.email });
+            OtherUserMsgInfo.push({"id": idCount, "msginfo": OthInvite, "otheruser": getOtherUser });
+            idCount = idCount + 1;
             console.log("Other User" + JSON.stringify(OtherUserMsgInfo));
         }
         setOtherMsgInfo(OtherUserMsgInfo);
@@ -68,11 +87,11 @@ export function ChatHistory(props: { currentUser: Buser }) {
                                 <td>User</td>
                             </th>
                         </tr>
-                        </thead>
-                        <tr key={index} onClick={() => console.log(index)}>
+                        </thead>                        
+                        <tr key={minvite.id} onClick={() => setChatSettingsData(minvite)}>
                             <td>{minvite.msginfo.isbn}</td>
-                            <td>{minvite.useremail}</td>                            
-                        </tr>
+                            <td>{minvite.otheruser.email}</td>                                                    
+                        </tr>                        
                     </table>
                     </div>
                 ))                
@@ -90,10 +109,9 @@ export function ChatHistory(props: { currentUser: Buser }) {
                                 <td>User</td>
                             </th>
                         </tr>
-                        <tr key={index} onClick={() => console.log(index)}>
+                        <tr key={oinvite.id} onClick={() => setChatSettingsData(oinvite)}>
                             <td>{oinvite.msginfo.isbn}</td>
-                            <td>{oinvite.useremail}</td>
-                            <td><button value={oinvite.msginfo._id}>chat</button></td>
+                            <td>{oinvite.otheruser.email}</td>
                         </tr>
                     </table>
                     </div>
