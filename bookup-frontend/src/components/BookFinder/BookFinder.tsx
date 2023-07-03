@@ -5,7 +5,7 @@ import { BookList } from "../BookList/BookList";
 import "./BookFinder.css"
 import { Buser } from "../../models/User";
 
-export function BookFinder(props: { user: Buser, chatUser: (chatUser: Buser) => void }) {
+export function BookFinder(props: { user: Buser, chatUser: (chatUser: Buser) => void, chatUserIsbn: (chatUserIsbn:string) => void }) {
 
     const [search, setSearch] = useState("");
     const [bookData, setBookData] = useState([])
@@ -20,7 +20,7 @@ export function BookFinder(props: { user: Buser, chatUser: (chatUser: Buser) => 
 
     function setOtherUser(bUser: Buser) {
         console.log("in BookFinder" + bUser);
-        props.chatUser(bUser); 
+        props.chatUser(bUser);
     }
 
     return (
@@ -35,7 +35,7 @@ export function BookFinder(props: { user: Buser, chatUser: (chatUser: Buser) => 
 
                 </form>
             </div>
-            <BookList bookList={bookData} user={props.user} chatUser={chatUser => setOtherUser(chatUser)} />
+            <BookList bookList={bookData} user={props.user} chatUser={chatUser => setOtherUser(chatUser)} chatUserIsbn={(chatUserIsbn) => props.chatUserIsbn(chatUserIsbn)} />
         </div>
     )
 }

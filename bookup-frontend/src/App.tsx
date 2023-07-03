@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { SignIn } from './components/SignIn/SignIn';
@@ -11,17 +11,18 @@ function App() {
 
   const [currUser, setCurrUser] = useState<Buser>()
   const [chatUser, setChatUser] = useState<Buser>()
+  const [chatUserIsbn, setChatUserIsbn] = useState("");
+
   console.log("currUser " + JSON.stringify(currUser));
-  console.log("chatUser" + chatUser); 
-  
+  console.log("chatUser " + chatUser);  
 
   return (
     <div className="App">
       <Router>
         <Routes>
-        <Route path='/' element={<SignIn activeUser={active => setCurrUser(active)} chatUser={chatUser => setChatUser(chatUser)}/>} />
+        <Route path='/' element={<SignIn activeUser={active => setCurrUser(active)} chatUser={chatUser => setChatUser(chatUser)}  chatUserIsbn={ chatUserIsbn => setChatUserIsbn(chatUserIsbn) }  />} />
         <Route path='/mybooks' element={<MyBooks currentUser={currUser!}/>} />
-        <Route path='/chat' element={<Chat currentUser={currUser!} chatUser={chatUser!}/>}/>
+        <Route path='/chat' element={<Chat currentUser={currUser!} chatUser={chatUser!} chatUserIsbn={chatUserIsbn!}/>}/>
         </Routes>
       </Router>
     </div>

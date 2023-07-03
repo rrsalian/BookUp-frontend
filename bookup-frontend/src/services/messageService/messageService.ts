@@ -14,6 +14,12 @@ export async function getMessagesByUserBookID(bookId: string, user1: string, use
     return response.data;
 }
 
+export async function getMessagesByUser(user: string): Promise<Message[]> {
+    const response = await axios
+        .get<Message[]>(`https://us-central1-bookup-4c4c7.cloudfunctions.net/api/messages/user/${user}`);
+    return response.data;
+}
+
 /* Calling this should be a rare event as it will fetch the entire collection */
 export async function getAllMessages(): Promise<Message[]> {
     const response = await axios

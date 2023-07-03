@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Buser } from "../../models/User";
 import { getUserByIsbn, getUsers, updateUser } from '../../services/userService/userService';
 
-export function BookList(props: {bookList: any[], user:Buser, chatUser: (chatUser: Buser) => void }) {
+export function BookList(props: {bookList: any[], user:Buser, chatUser: (chatUser: Buser) => void , chatUserIsbn: (chatUserIsbn: string) => void}) {
 
     const [showBtnPopUp, setShowBtnPopUp] = useState(false);
     const [showBook, setShowBook] = useState<any>({});
@@ -49,6 +49,7 @@ export function BookList(props: {bookList: any[], user:Buser, chatUser: (chatUse
             setIsbnUsers(isbnUsers);
         }
         setShowMap(!showMap);
+         props.chatUserIsbn(isbn);
     }
 
     function addBook(newIsbn:string) {  
@@ -68,7 +69,7 @@ export function BookList(props: {bookList: any[], user:Buser, chatUser: (chatUse
         console.log("showPopUp" +  showBtnPopUp);        
     },[showBtnPopUp])
      
-    let mapCon = showMap ?  <BookMap user={props.user} closeMap={(isbn) => showBookLocation(isbn)} isbnUsers={isbnUsers} chatUser={chatUser => props.chatUser(chatUser)}></BookMap> : "";
+    let mapCon = showMap ?  <BookMap user={props.user} closeMap={(isbn) => showBookLocation(isbn)} isbnUsers={isbnUsers} chatUser={chatUser => props.chatUser(chatUser)} chatUserIsbn={isbn}></BookMap> : "";
 
     return (
        <div> 
