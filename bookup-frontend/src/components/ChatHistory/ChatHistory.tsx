@@ -117,6 +117,18 @@ export function ChatHistory(props: { currentUser: Buser }) {
                     </div>
                 ))
             }
+            {
+
+            goChat ? 
+                <div>
+                    <ViewChat currentUser={props.currentUser} chatUser={chatData?.otheruser!} isbn={chatData?.msginfo.isbn!}></ViewChat>
+                    <button onClick={()=> {setGoChat(false)}}>Close</button>
+                </div>
+           
+            :
+            <></>
+            }
+            
         </div>
     )
 }
