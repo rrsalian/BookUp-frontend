@@ -1,0 +1,23 @@
+
+
+.other-book-list {
+    display: block;
+}
+
+.other-books-view {
+    display: flex;
+    justify-content: center;
+}
+
+.other-book {
+    width: 200px;
+    margin: 20px;
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.swap-ready-button {
+    display: block;
+    margin: auto;
+}

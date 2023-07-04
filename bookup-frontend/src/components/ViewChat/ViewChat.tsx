@@ -4,17 +4,19 @@ import "./ViewChat.css";
 import { Message } from "../../models/Message";
 import { getMessagesByUserBookID, postMessage } from "../../services/messageService/messageService";
 
-export function ViewChat(props: { currentUser: Buser, chatUser: Buser, isbn: string }) {
+export function ViewChat(props: { currentUser: Buser, chatUser: Buser, isbn: string, lastMessage: (message: Message) => void }) {
 
     const [me, setme] = useState<Buser>(props.currentUser);
     const [other, setOther] = useState<Buser>(props.chatUser);
     const [isbn, setIsbn] = useState(props.isbn);
     const [messages, setMessages] = useState<Message[]>([]);
     const [newText, setNewText] = useState("");
+    const [lastMessage, setLastMessage] = useState<Message>()
 
     useEffect(() => {
         if (me)
             getUserMessages(isbn, me._id!, other._id!);
+            
     },[])
 
     function scrollToBottom() {
@@ -25,6 +27,11 @@ export function ViewChat(props: { currentUser: Buser, chatUser: Buser, isbn: str
     async function getUserMessages(isbn: string, user1_id: string, user2_id: string) {
         const userMessages = await getMessagesByUserBookID(isbn, user1_id, user2_id);        
         setMessages(userMessages);
+        setLastMessage(messages[messages.length - 1])
+        props.lastMessage(lastMessage!)
+        console.log("lm1: " + JSON.stringify(lastMessage));
+        
+        
     }
 
     async function handleSubmit (e: any) {
@@ -50,11 +57,16 @@ export function ViewChat(props: { currentUser: Buser, chatUser: Buser, isbn: str
         setMessages( newMessages );
         setNewText("");        
         scrollToBottom();
+        setLastMessage(messages[messages.length - 1])
+        props.lastMessage(lastMessage!)
+        console.log("lm2: " + JSON.stringify(lastMessage));
+        
       };
 
       const handleChange = (e: any) => {
         setNewText( e.target.value );
       };
+
 
     return (
         <div className="main">
