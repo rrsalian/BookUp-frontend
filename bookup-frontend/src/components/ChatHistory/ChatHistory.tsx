@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Buser } from "../../models/User"
-import { getMessagesByUser } from "../../services/messageService/messageService";
+import { UpdateMessage, getMessagesByUser, postMessage } from "../../services/messageService/messageService";
 import { Message } from "../../models/Message";
 import { getUserById } from "../../services/userService/userService";
 import { Header } from "../Header/Header";
@@ -19,6 +19,7 @@ export function ChatHistory(props: { currentUser: Buser }) {
     let myUserMsgInfo: UserMessageInfo[] = [];
     let OtherUserMsgInfo: UserMessageInfo[] = [];
 
+    const [myChatHistory, setMyChatHistory] = useState<Message[]>([]);
     const [allInvites, setAllInvites] = useState<Message[]>([]);
     const [myInvites, setMyInvites] = useState<Message[]>([]);
     const [othersInvites, setOthersInvites] = useState<Message[]>([]);
@@ -26,37 +27,35 @@ export function ChatHistory(props: { currentUser: Buser }) {
     const [otherMsgInfo, setOtherMsgInfo] = useState<UserMessageInfo[]>([])
     const [chatData, setChatData] = useState<UserMessageInfo>();
     const [goChat, setGoChat] = useState(false);
-    const [closeChat, setCloseChat] = useState(false);
+    const [openChatBtn, setOpenChatBtn] = useState(true);
     const [otherUserBookPopup, setOtherUserBookPopup] = useState(false)
     const [lastMessage, setLastMessage] = useState<Message>()
-    const [swapStatus, setSwapStatus] = useState(false)
-    const [swappedBook, setSwappedBook] = useState("")
-
-
-
+    const [swappedBook, setSwappedBook] = useState("");
+    const [swapStatus, setSwapStatus] = useState(false);
+    const [swapToFinish, setSwapToFinish] = useState(false);
+    const [messages, setMessages] = useState<Message[]>();
 
     useEffect(() => {
         console.log("in useEffect");
         getUserChatHistory(props.currentUser);
-    }, [allInvites.length])
+    }, [myChatHistory.length])
 
-
-    function setChatSettingsData(usrmsginfo: UserMessageInfo) {
-        if (chatData?.id !== usrmsginfo.id) {
-            setCloseChat(true);
-        }
+    function setChatSettingsData(usrmsginfo: UserMessageInfo) {        
         setChatData(usrmsginfo);
-        console.log(usrmsginfo);
-        setGoChat(true);
+        console.log("goChat " + goChat);
+        if (!goChat) {
+            setGoChat(true);
+            setOpenChatBtn(false);
+        }    
         console.log("CH: " + JSON.stringify(lastMessage));
-        
+                
     }
 
     async function getUserChatHistory(user: Buser) {
         let idCount = 0;
-        const myChatHistory: Message[] = await getMessagesByUser(user._id!);
-        console.log(myChatHistory);
-        const getAllInvites = myChatHistory.filter((message) => message.state === "invite")
+        const getAllMyChatHistory: Message[] = await getMessagesByUser(user._id!);
+        setMyChatHistory(getAllMyChatHistory);
+        const getAllInvites = getAllMyChatHistory.filter((message) => message.state === "invite" )
         setAllInvites(getAllInvites);
         setMyInvites(getAllInvites.filter((msg) => msg.initiator === props.currentUser._id));
 
@@ -78,6 +77,7 @@ export function ChatHistory(props: { currentUser: Buser }) {
             console.log("Other User" + JSON.stringify(OtherUserMsgInfo));
         }
         setOtherMsgInfo(OtherUserMsgInfo);
+
     }
 
     const [otherBookList, setOtherBookList] = useState<any[]>([]);
@@ -90,38 +90,69 @@ export function ChatHistory(props: { currentUser: Buser }) {
             await getBook(book).then(book => bArray = [...bArray, ...book.data.items])
             setOtherBookList(bArray);
         }
-        console.log(otherBookList)
-        console.log(bUser.books)
+        if (messages![messages!.length - 1].state === "Ready to swap") {
+            setSwapStatus(true);
+            setSwapToFinish(true);
+        } 
+        
     }
 
-    function swapBook(book: any) {
-        console.log(book)
-        const isbn = book.volumeInfo!.industryIdentifiers[0].type === "ISBN_13" ? book!.volumeInfo.industryIdentifiers[0].identifier: book!.volumeInfo.industryIdentifiers[1].identifier
-        console.log(isbn);
+    function handleMessages(msgReceived: Message[]) {
+        setMessages(msgReceived);        
+    }
+
+    async function readyToSwapBook(title: string, swapIsbn: string) {
         
-        setSwappedBook(isbn)
-        setSwapStatus(true)
-        console.log(swappedBook);
-        
+        const date = new Date(); // Or the date you'd like converted.
+        const isoDateTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
+        const lastMsg = `I am Ready to Swap a Book with title '${title}' and Isbn ${swapIsbn}`;
+
+        setSwappedBook(swapIsbn);    // isn't working
+        setSwapStatus(true);
+        //console.log("chatData " + JSON.stringify(chatData));
+        const newMessage:Message = { 
+            "createdAt": isoDateTime, 
+            "initiator": chatData?.msginfo.initiator!,
+            "isbn": chatData?.msginfo.isbn!,
+            "receiverId": chatData?.msginfo.initiator!,
+            "senderId": chatData?.msginfo.receiverId!,
+            "state": "Ready to swap",
+            "swapToIsbn": `${swapIsbn}`,
+            "message": lastMsg
+       };
+                    
+       await postMessage(newMessage);
+       const newMessages: Message[] = [ ...messages!, newMessage];
+       setMessages(newMessages);
+       //console.log("last message " + JSON.stringify(sendMessage));
+
     }
 
     async function swapComplete(book: any) {
         const date = new Date(); // Or the date you'd like converted.
         const isoDateTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
-        
+        console.log("book " + JSON.stringify(book));
                 
-        /* const newMessage:Message = { "createdAt": isoDateTime, 
-                                     "initiator": lastMessage?.initiator!,
-                                     "isbn": swappedBook!.volumeInfo!.industryIdentifiers[0].type === "ISBN_13" ? swappedBook!.volumeInfo.industryIdentifiers[0].identifier: swappedBook!.volumeInfo.industryIdentifiers[1].identifier,
-                                     "receiverId": other._id!,
-                                     "senderId": me._id!,
-                                     "state": currentState,
-                                     "swapToIsbn": "",                       
-                                     "message": newText
-                                    };
-        
-        await postMessage(newMessage);
-        const newMessages: Message[] = [ ...messages, newMessage]; */
+        const newMessage:Message = { 
+            "createdAt": isoDateTime, 
+            "initiator": chatData?.msginfo.initiator!,
+            "isbn": chatData?.msginfo.isbn!,
+            "receiverId": chatData?.msginfo.initiator!,
+            "senderId": chatData?.msginfo.receiverId!,
+            "state": "Swap Complete",
+            "swapToIsbn": "",
+            "message": "Book has been swapped"
+       };
+    
+       await postMessage(newMessage);
+       const newMessages: Message[] = [ ...messages!, newMessage];
+       const msgIndex = newMessages.findIndex((msg => msg.state == "invite"));
+       const firstMsg = newMessages[msgIndex];
+       firstMsg.state = firstMsg.state + "|Complete";
+       await UpdateMessage(firstMsg, firstMsg._id!);
+       setMessages(newMessages);
+       setSwapToFinish(false);
+       console.log("newMessages " + JSON.stringify(messages));
     }
 
 
@@ -146,7 +177,7 @@ export function ChatHistory(props: { currentUser: Buser }) {
                             <tr key={minvite.id} >
                                 <td>{minvite.msginfo.isbn}</td>
                                 <td>{minvite.otheruser.email}</td>
-                                <td><button onClick={() => setChatSettingsData(minvite)}>Open Chat</button></td>
+                                <td><button disabled={!openChatBtn} onClick={() => setChatSettingsData(minvite)}>Open Chat</button></td>
                             </tr>
                         </table>
                     </div>
@@ -168,7 +199,7 @@ export function ChatHistory(props: { currentUser: Buser }) {
                             <tr key={oinvite.id}>
                                 <td>{oinvite.msginfo.isbn}</td>
                                 <td>{oinvite.otheruser.email}</td>
-                                <td><button onClick={() => setChatSettingsData(oinvite)}>Open Chat</button></td>
+                                <td><button disabled={!openChatBtn} onClick={() => setChatSettingsData(oinvite)}>Open Chat</button></td>
                             </tr>
                         </table>
                     </div>
@@ -178,24 +209,24 @@ export function ChatHistory(props: { currentUser: Buser }) {
 
                 goChat ?
                     <div>
-                        <button style={chatData?.otheruser._id === chatData?.msginfo.initiator ? { display: "block", margin: "auto" } : { display: "none" }} onClick={() => getOtherBookList(chatData?.otheruser!)}>View {chatData?.otheruser.email}'s books</button>
-                        <ViewChat currentUser={props.currentUser} chatUser={chatData?.otheruser!} isbn={chatData?.msginfo.isbn!} lastMessage={(lm) => setLastMessage(lm)}></ViewChat>
-                        <button onClick={() => { setGoChat(false) }}>Close</button>
+                        <button disabled={otherUserBookPopup} style={chatData?.otheruser._id === chatData?.msginfo.initiator ? { display: "block", margin: "auto" } : { display: "none" }} onClick={() => getOtherBookList(chatData?.otheruser!)}>View {chatData?.otheruser.email}'s books</button>
+                        <ViewChat currentUser={props.currentUser} chatUser={chatData?.otheruser!} isbn={chatData?.msginfo.isbn!} handleMessages={handleMessages} messages={messages!}></ViewChat>
+                        <button onClick={() => { setGoChat(false); setOpenChatBtn(true); setOtherUserBookPopup(false)}}>Close</button>
                         <div className={otherUserBookPopup ? "other-book-list" : "hidden"}>
                             <button onClick={() => setOtherUserBookPopup(false)}> hide books</button>
                             <p>{chatData?.otheruser.email}'s books</p>
-                            <div className="other-books-view">
-                                
+                            <div className={(chatData?.otheruser._id === chatData?.msginfo.initiator) ? "other-books-view" : "hidden" }>
                                 {
                                     otherBookList.map(book => <div className="other-book">
                                         <img src={book.volumeInfo.imageLinks?.thumbnail!} />
-                                        <p>{book.volumeInfo.title}</p>
-                                        <button disabled={swapStatus} onClick={() => swapBook(book)}>Ready to Swap</button>
+                                        <p>{book.volumeInfo.title}</p>                                        
+                                        <button disabled={swapStatus} onClick={() => readyToSwapBook(book.volumeInfo.title, book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? book.volumeInfo.industryIdentifiers[0].identifier: book.volumeInfo.industryIdentifiers[1].identifier)
+                                                          }>Ready to Swap</button>
                                     </div>)
                                 }
                                 
                             </div>
-                            <button className={!swapStatus ? "hidden" : "swap-ready-button"} onClick={() => swapComplete(swappedBook)}>Complete Swap</button>
+                            <button disabled={!swapToFinish} className={!swapStatus ? "hidden" : "swap-ready-button"} onClick={() => swapComplete(swappedBook)}>Complete Swap</button>
                         </div>
                     </div>
 
