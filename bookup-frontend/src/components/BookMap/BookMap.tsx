@@ -41,6 +41,7 @@ export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, 
   const firstBookCoord = booksCoords.length > 0 ? booksCoords[0] : myPosition;
 
   const [polyLinePosition, setPolylinePosition] = useState<LatLngTuple[]>([myPosition.latLon, firstBookCoord.latLon]);
+  const [mapReady, setMapReady] = useState(true);
 
   function getMidpoint(latLon1: LatLngTuple, latLon2: LatLngTuple): LatLngTuple {
     if (latLon2 == null) {
@@ -66,8 +67,17 @@ export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, 
     return Math.round(ln.distanceTo(latLng(latLon2[0], latLon2[1])) / 1000 * .62 * 100) / 100;
   }
 
+  function getZoom(latLon1: LatLngTuple, latLon2: LatLngTuple) {
+     let dist = getDistance(latLon1, latLon2);
+     return Math.log2(40000 / dist);
+  }
+
   function setCurrentBookCoord(coord: BookCoord) {
     setPolylinePosition([myPosition.latLon, coord.latLon]);
+    setMapReady(false);
+    setTimeout(() => {
+      setMapReady(true);
+    }, 10);
   }
 
   function setOtherUser(bUser: Buser) {
@@ -82,8 +92,9 @@ export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, 
 
   return (
     <div className='App'>
-      <div onClick={() => props.closeMap("")} style={{ fontSize: "20pt", position: "absolute", right: "25vw", zIndex: "2000", cursor: "pointer" }}>X</div>
-      <MapContainer center={myPosition.latLon} zoom={13} scrollWheelZoom={false} style={{ width: "50vw", height: "50vh", margin: "10px auto", border: "2px solid #143642" }}>
+      <div onClick={() => props.closeMap("")} style={{ fontSize: "20pt", position: "absolute", right: "21vw", zIndex: "2000", cursor: "pointer" }}>✗</div>
+      {mapReady ?
+      <MapContainer center={getMidpoint(polyLinePosition[0], polyLinePosition[1])} zoom={getZoom(polyLinePosition[0], polyLinePosition[1])} scrollWheelZoom={false} style={{ width: "60vw", height: "50vh", marginTop: "-60px", marginLeft: "auto", marginRight: "auto", border: "2px solid #143642" }}>
         <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <Marker position={myPosition.latLon} icon={new DivIcon({ html: "<img style='width: 70px; margin-left: -30px; margin-top: -30px;' src='https://www.freeiconspng.com/thumbs/person-icon/person-icon-person-icon-clipart-image-from-our-icon-clipart-category--9.png' />" })}>
           <Popup>
@@ -100,7 +111,8 @@ export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, 
         ))}
         <Polyline pathOptions={{ color: 'red' }} positions={polyLinePosition}></Polyline>
         <Marker position={getMidpoint(polyLinePosition[0], polyLinePosition[1])} icon={new DivIcon({ html: "<div style='" + midPointStyle + "'>" + getDistance(polyLinePosition[0], polyLinePosition[1]) + "miles </div>" })}></Marker>
-      </MapContainer>
+      </MapContainer> : <div></div>
+      }
     </div>
   );
 }
