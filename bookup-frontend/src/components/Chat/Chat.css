@@ -10,20 +10,86 @@ html, body, #root, .App {
 }
 
 .chatwrapper {
-    min-height: 50vh;
+
     width: 80%;   
     margin: 0px;
 }
 
-.chatspace {
-    min-height: 50vh;
-    width: 100%;
-    height: 100%;
+
+.chatSpace {
+    
+    width: 450px;
+    height: 500px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     border:1px solid grey; 
     border-radius: 5px;
     margin: 20px;
 }
 
+.chatInputWrapper {
+    
+    border-top: 1px solid grey;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.chatInputWrapper input {
+    width: 79%;
+}
+
+.chatInputWrapper input, .chatInputWrapper button {
+    padding: 10px;
+
+}
+
+.chatWindow {
+   
+    padding: 20px;
+    overflow-y:scroll;
+}
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    
+}
+
+.self {
+    float: right;
+    padding: 10px;
+    display: block;
+    width: 150px;
+    border: 1px solid black;
+    margin: 10px 0;
+    background-color: #cae1f7;
+    font-size: 0.8rem;
+    text-align: left;
+    line-height: 1.4;
+    border-radius: 5px;
+}
+
+.other {
+    border: 1px solid black;
+    float: left;
+    padding: 10px;
+    display: block;
+    width: 150px;
+    margin: 10px 0;
+    background-color: #d9d9d9;
+    font-size: 0.8rem;
+    text-align: left;
+    line-height: 1.4;
+    border-radius: 5px;
+
+}
+
+.other p {
+    margin-bottom: 10px;
+}
+.self p {
+    margin-bottom: 10px;
+}

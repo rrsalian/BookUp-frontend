@@ -60,7 +60,7 @@ export function Chat(props: { currentUser: Buser, chatUser: Buser, chatUserIsbn:
 
     return (
         <div className="main">            
-            <ChatHistory currentUser={me}></ChatHistory>
+           <Header></Header>
             <div className="chatSpace">                
                 <div className="chatWindow">
                     <ul className="chat" id="chatList">
@@ -89,12 +89,13 @@ export function Chat(props: { currentUser: Buser, chatUser: Buser, chatUserIsbn:
                             )
                         }
                     </ul>
-                    <div className="chatInputWrapper">                    
+                    
+                </div>
+                <div className="chatInputWrapper">                    
                         <input className="textarea input" type="text" value={newText} placeholder="Enter your message..."
                         onChange={handleChange}/>                        
                         <button onClick={handleSubmit}>Send</button>
                     </div>
-                </div>
             </div>
         </div>
     )

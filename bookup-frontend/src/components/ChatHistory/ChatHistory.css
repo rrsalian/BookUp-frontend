@@ -25,4 +25,9 @@
 .chat-options {
     display: flex;
     width: 450px;
+    margin: auto;
+}
+
+.chat-options button {
+    padding: 5px;
 }

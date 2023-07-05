@@ -36,7 +36,6 @@ export function MyBooks(props: {currentUser: Buser}) {
                         <img  className="book-image" src={book.volumeInfo.imageLinks?.thumbnail!} alt="" />
                         <p>Title: {book.volumeInfo.title}</p>
                         <p>Subtitle: {book.volumeInfo.subtitle}</p>
-                        <p>Text Snippet: {book.searchInfo.textSnippet}</p>
                         <address>Author/s: {book.volumeInfo.authors}</address>
                         <p>ISBN: {book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? book.volumeInfo.industryIdentifiers[0].identifier: book.volumeInfo.industryIdentifiers[1].identifier}</p>
                     </div>)

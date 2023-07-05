@@ -9,6 +9,11 @@ html, body, #root, .App {
     padding:0px;
 }
 
+.main {
+    display: flex;
+    justify-content: center;
+}
+
 .chatwrapper {
 
     width: 80%;   
