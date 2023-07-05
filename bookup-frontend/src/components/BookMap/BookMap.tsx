@@ -73,6 +73,7 @@ export function BookMap(props: { user: Buser, closeMap: (isbn: string) => void, 
   }
 
   function setCurrentBookCoord(coord: BookCoord) {
+    if(polyLinePosition.length > 0 && polyLinePosition[1][0] == coord.latLon[0] && polyLinePosition[1][1] == coord.latLon[1]){ return; }
     setPolylinePosition([myPosition.latLon, coord.latLon]);
     setMapReady(false);
     setTimeout(() => {

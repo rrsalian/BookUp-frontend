@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom"
 import "./BookCard.css"
-import { BookView } from "../BookView/BookView"
 import { useEffect, useState } from "react"
 import { Buser } from "../../models/User";
 
