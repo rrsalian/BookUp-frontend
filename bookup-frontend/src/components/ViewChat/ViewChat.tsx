@@ -87,7 +87,7 @@ export function ViewChat(props: { currentUser: Buser, chatUser: Buser, isbn: str
                                         (
                                             <div className="other">
                                                 <div className="msg">
-                                                    <p>{other.email}</p>
+                                                    <p>{other.email}:</p>
                                                     <div className="message">{message.message}</div>
                                                 </div>
                                             </div>

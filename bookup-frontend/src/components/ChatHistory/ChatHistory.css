@@ -21,3 +21,8 @@
     display: block;
     margin: auto;
 }
+
+.chat-options {
+    display: flex;
+    width: 450px;
+}

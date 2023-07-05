@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Buser } from "../../models/User"
 import { UpdateMessage, getMessagesByUser, postMessage } from "../../services/messageService/messageService";
 import { Message } from "../../models/Message";
@@ -35,27 +35,29 @@ export function ChatHistory(props: { currentUser: Buser }) {
     const [swapToFinish, setSwapToFinish] = useState(false);
     const [messages, setMessages] = useState<Message[]>();
 
+    const myRef = useRef<null | HTMLDivElement>(null);
+
     useEffect(() => {
         console.log("in useEffect");
         getUserChatHistory(props.currentUser);
     }, [myChatHistory.length])
 
-    function setChatSettingsData(usrmsginfo: UserMessageInfo) {        
+    function setChatSettingsData(usrmsginfo: UserMessageInfo) {
         setChatData(usrmsginfo);
         console.log("goChat " + goChat);
         if (!goChat) {
             setGoChat(true);
             setOpenChatBtn(false);
-        }    
+        }
         console.log("CH: " + JSON.stringify(lastMessage));
-                
+
     }
 
     async function getUserChatHistory(user: Buser) {
         let idCount = 0;
         const getAllMyChatHistory: Message[] = await getMessagesByUser(user._id!);
         setMyChatHistory(getAllMyChatHistory);
-        const getAllInvites = getAllMyChatHistory.filter((message) => message.state === "invite" )
+        const getAllInvites = getAllMyChatHistory.filter((message) => message.state === "invite")
         setAllInvites(getAllInvites);
         setMyInvites(getAllInvites.filter((msg) => msg.initiator === props.currentUser._id));
 
@@ -93,16 +95,16 @@ export function ChatHistory(props: { currentUser: Buser }) {
         if (messages![messages!.length - 1].state === "Ready to swap") {
             setSwapStatus(true);
             setSwapToFinish(true);
-        } 
-        
+        }
+        scrollToBottom();
     }
 
     function handleMessages(msgReceived: Message[]) {
-        setMessages(msgReceived);        
+        setMessages(msgReceived);
     }
 
     async function readyToSwapBook(title: string, swapIsbn: string) {
-        
+
         const date = new Date(); // Or the date you'd like converted.
         const isoDateTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
         const lastMsg = `I am Ready to Swap a Book with title '${title}' and Isbn ${swapIsbn}`;
@@ -110,8 +112,8 @@ export function ChatHistory(props: { currentUser: Buser }) {
         setSwappedBook(swapIsbn);    // isn't working
         setSwapStatus(true);
         //console.log("chatData " + JSON.stringify(chatData));
-        const newMessage:Message = { 
-            "createdAt": isoDateTime, 
+        const newMessage: Message = {
+            "createdAt": isoDateTime,
             "initiator": chatData?.msginfo.initiator!,
             "isbn": chatData?.msginfo.isbn!,
             "receiverId": chatData?.msginfo.initiator!,
@@ -119,12 +121,12 @@ export function ChatHistory(props: { currentUser: Buser }) {
             "state": "Ready to swap",
             "swapToIsbn": `${swapIsbn}`,
             "message": lastMsg
-       };
-                    
-       await postMessage(newMessage);
-       const newMessages: Message[] = [ ...messages!, newMessage];
-       setMessages(newMessages);
-       //console.log("last message " + JSON.stringify(sendMessage));
+        };
+
+        await postMessage(newMessage);
+        const newMessages: Message[] = [...messages!, newMessage];
+        setMessages(newMessages);
+        //console.log("last message " + JSON.stringify(sendMessage));
 
     }
 
@@ -132,9 +134,9 @@ export function ChatHistory(props: { currentUser: Buser }) {
         const date = new Date(); // Or the date you'd like converted.
         const isoDateTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
         console.log("book " + JSON.stringify(book));
-                
-        const newMessage:Message = { 
-            "createdAt": isoDateTime, 
+
+        const newMessage: Message = {
+            "createdAt": isoDateTime,
             "initiator": chatData?.msginfo.initiator!,
             "isbn": chatData?.msginfo.isbn!,
             "receiverId": chatData?.msginfo.initiator!,
@@ -142,18 +144,23 @@ export function ChatHistory(props: { currentUser: Buser }) {
             "state": "Swap Complete",
             "swapToIsbn": "",
             "message": "Book has been swapped"
-       };
-    
-       await postMessage(newMessage);
-       const newMessages: Message[] = [ ...messages!, newMessage];
-       const msgIndex = newMessages.findIndex((msg => msg.state == "invite"));
-       const firstMsg = newMessages[msgIndex];
-       firstMsg.state = firstMsg.state + "|Complete";
-       await UpdateMessage(firstMsg, firstMsg._id!);
-       setMessages(newMessages);
-       setSwapToFinish(false);
-       console.log("newMessages " + JSON.stringify(messages));
+        };
+
+        await postMessage(newMessage);
+        const newMessages: Message[] = [...messages!, newMessage];
+        const msgIndex = newMessages.findIndex((msg => msg.state == "invite"));
+        const firstMsg = newMessages[msgIndex];
+        firstMsg.state = firstMsg.state + "|Complete";
+        await UpdateMessage(firstMsg, firstMsg._id!);
+        setMessages(newMessages);
+        setSwapToFinish(false);
+        console.log("newMessages " + JSON.stringify(messages));
     }
+
+    function scrollToBottom() {
+        const otherBookList = document.querySelector("other-book")!;
+        myRef?.current?.scrollIntoView({ behavior: "smooth"})
+      };
 
 
     return (
@@ -209,22 +216,25 @@ export function ChatHistory(props: { currentUser: Buser }) {
 
                 goChat ?
                     <div>
-                        <button disabled={otherUserBookPopup} style={chatData?.otheruser._id === chatData?.msginfo.initiator ? { display: "block", margin: "auto" } : { display: "none" }} onClick={() => getOtherBookList(chatData?.otheruser!)}>View {chatData?.otheruser.email}'s books</button>
+                        <div className="chat-options">
+                            <button disabled={otherUserBookPopup} style={chatData?.otheruser._id === chatData?.msginfo.initiator ? { display: "block", margin: "auto" } : { display: "none" }} onClick={() => getOtherBookList(chatData?.otheruser!)}>View {chatData?.otheruser.email}'s books</button>
+                            <button onClick={() => { setGoChat(false); setOpenChatBtn(true); setOtherUserBookPopup(false) }}>Close Chat</button>
+                        </div>
                         <ViewChat currentUser={props.currentUser} chatUser={chatData?.otheruser!} isbn={chatData?.msginfo.isbn!} handleMessages={handleMessages} messages={messages!}></ViewChat>
-                        <button onClick={() => { setGoChat(false); setOpenChatBtn(true); setOtherUserBookPopup(false)}}>Close</button>
+
                         <div className={otherUserBookPopup ? "other-book-list" : "hidden"}>
                             <button onClick={() => setOtherUserBookPopup(false)}> hide books</button>
                             <p>{chatData?.otheruser.email}'s books</p>
-                            <div className={(chatData?.otheruser._id === chatData?.msginfo.initiator) ? "other-books-view" : "hidden" }>
+                            <div className={(chatData?.otheruser._id === chatData?.msginfo.initiator) ? "other-books-view" : "hidden"}>
                                 {
-                                    otherBookList.map(book => <div className="other-book">
+                                    otherBookList.map(book => <div ref={myRef} className="other-book">
                                         <img src={book.volumeInfo.imageLinks?.thumbnail!} />
-                                        <p>{book.volumeInfo.title}</p>                                        
-                                        <button disabled={swapStatus} onClick={() => readyToSwapBook(book.volumeInfo.title, book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? book.volumeInfo.industryIdentifiers[0].identifier: book.volumeInfo.industryIdentifiers[1].identifier)
-                                                          }>Ready to Swap</button>
+                                        <p>{book.volumeInfo.title}</p>
+                                        <button disabled={swapStatus} onClick={() => readyToSwapBook(book.volumeInfo.title, book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? book.volumeInfo.industryIdentifiers[0].identifier : book.volumeInfo.industryIdentifiers[1].identifier)
+                                        }>Ready to Swap</button>
                                     </div>)
                                 }
-                                
+
                             </div>
                             <button disabled={!swapToFinish} className={!swapStatus ? "hidden" : "swap-ready-button"} onClick={() => swapComplete(swappedBook)}>Complete Swap</button>
                         </div>
