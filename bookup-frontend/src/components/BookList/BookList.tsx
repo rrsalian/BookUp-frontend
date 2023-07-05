@@ -80,8 +80,12 @@ export function BookList(props: {bookList: any[], user:Buser, chatUser: (chatUse
                 props.bookList.map((book, index) => 
                     (   
                         <div className="bookcard">
+                            {
+                                book.volumeInfo.imageLinks?.thumbnail ? <button key={index} onClick={() => handleShowBtnPopUp(book)} className="book-btn"><img className="book-image" src={book.volumeInfo.imageLinks?.thumbnail} alt="" /></button>
+                                : <button key={index} onClick={() => handleShowBtnPopUp(book)} className="book-btn"><p className="no-book-image">{book.volumeInfo.title}</p></button>
+                            }
                             
-                            <button key={index} onClick={() => handleShowBtnPopUp(book)} className="book-btn"><img className="book-image" src={book.volumeInfo.imageLinks?.thumbnail} alt="" /></button>                           
+                            {/* <button key={index} onClick={() => handleShowBtnPopUp(book)} className="book-btn"><img className="book-image" src={book.volumeInfo.imageLinks?.thumbnail} alt="" /></button> */}                           
                             
                         </div>
                     )
