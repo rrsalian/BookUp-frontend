@@ -63,7 +63,6 @@ export function ViewChat(props: { currentUser: Buser, chatUser: Buser, isbn: str
         setNewText(e.target.value);
     };
 
-
     return (
         <div className="main">
             <div className="chatSpace">
@@ -71,7 +70,6 @@ export function ViewChat(props: { currentUser: Buser, chatUser: Buser, isbn: str
                 <div className="chatWindow">
 
                     <ul className="chat" id="chatList">
-
                         {
                             messages.map(message =>
                                 <div key={message._id}>

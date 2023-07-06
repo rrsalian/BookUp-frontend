@@ -159,8 +159,8 @@ export function ChatHistory(props: { currentUser: Buser }) {
 
     function scrollToBottom() {
         const otherBookList = document.querySelector("other-book")!;
-        myRef?.current?.scrollIntoView({ behavior: "smooth"})
-      };
+        myRef?.current?.scrollIntoView({ behavior: "smooth" })
+    };
 
 
     return (
@@ -172,15 +172,15 @@ export function ChatHistory(props: { currentUser: Buser }) {
                     <div style={{ marginTop: 24, marginLeft: 12 }}>
                         <table>
 
-                            <thead>
-                                <tr>
-                                    <th>
-                                        <h3>My Invites</h3>
-                                        <td>Book ISBN</td>
-                                        <td>User</td>
-                                    </th>
-                                </tr>
-                            </thead>
+                            <h3>My Invites</h3>
+                            <tr>
+                                <th>
+                                    <td>Book ISBN</td>
+                                    <td>User</td>
+                                    
+                                </th>
+                            </tr>
+
                             <tr key={minvite.id} >
                                 <td>{minvite.msginfo.isbn}</td>
                                 <td>{minvite.otheruser.email}</td>
@@ -198,9 +198,10 @@ export function ChatHistory(props: { currentUser: Buser }) {
                         <table>
                             <h3>Other Invites</h3>
                             <tr>
-                                <th>
+                                <th className="tblheader">
                                     <td>Book ISBN</td>
                                     <td>User</td>
+                                    
                                 </th>
                             </tr>
                             <tr key={oinvite.id}>
