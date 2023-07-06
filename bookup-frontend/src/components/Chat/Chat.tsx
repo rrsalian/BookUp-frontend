@@ -59,7 +59,7 @@ export function Chat(props: { currentUser: Buser, chatUser: Buser, chatUserIsbn:
       };
 
     return (
-        <div className="main">            
+        <div className="main-chat">            
            <Header></Header>
             <div className="chatSpace">                
                 <div className="chatWindow">
