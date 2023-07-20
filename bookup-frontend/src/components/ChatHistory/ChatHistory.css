@@ -1,39 +1,88 @@
-
-
-.other-book-list {
-    display: block;
+html, body, #root, .App {    
+  min-height: 100vh;
+  min-width: 100vw;
+  padding:0px;
 }
 
-.other-books-view {
-    display: flex;
-    justify-content: center;
+.main-histry {
+  width:100wh;
 }
 
-.other-book {
-    width: 200px;
-    margin: 20px;
-    border: 2px solid black;
-    padding: 10px;
-    border-radius: 5px;
+.section {
+  display:flex;
+  flex-direction:column;
+  justify-content:space-around;
+  align-items: center;  
 }
 
-.swap-ready-button {
-    display: block;
-    margin: auto;
+.histry {
+  display:flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
-.chat-options {
-    display: flex;
-    width: 450px;
-    margin: auto;
+.styled-table { 
+    border-collapse: collapse; 
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    box-shadow: 0 0 20px rgba(73, 68, 117, 0.15);
+    margin:20px;
 }
 
-.chat-options button {
-    padding: 5px;
+.styled-table thead tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
 }
 
-td {
-  border: 1px solid;
-  padding: 5px;
-} 
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
 
+td {  
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding:10px;
+  color: rgb(139, 51, 0);
+}
+
+th{
+  background-color: grey;
+  color: yellow;
+}
+
+.chatbtn {
+  border: none;
+  text-overflow:none;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+
+.styled-table tbody tr.active-row {
+  font-weight: bold;   
+  background-color: lightgray
+}
+
+.btn {
+  background-color:gray ;
+  border-radius: 5%;
+  width:auto;
+  border:1px solid grey;  
+  padding: 2px;
+  color:white;
+  font-weight: 100;
+  cursor: pointer;
+}

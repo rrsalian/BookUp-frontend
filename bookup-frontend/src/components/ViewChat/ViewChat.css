@@ -3,31 +3,23 @@
     margin:0px;   
 }
 
-html, body, #root, .App {    
-    min-height: 100vh;
-    min-width: 100vw;
-    padding:0px;
-}
-
 .main {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 .chatwrapper {
-
     width: 80%;   
     margin: 0px;
 }
 
-
-.chatSpace {
-    
+.chatSpace {    
     width: 450px;
     height: 500px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    
     border:1px solid grey; 
     border-radius: 5px;
     margin: 20px;
@@ -89,7 +81,6 @@ html, body, #root, .App {
     text-align: left;
     line-height: 1.4;
     border-radius: 5px;
-
 }
 
 .other p {
@@ -97,4 +88,40 @@ html, body, #root, .App {
 }
 .self p {
     margin-bottom: 10px;
+}
+
+.other-book-list {
+    display: block;
+}
+
+.other-books-view {
+    display: flex;
+    justify-content: center;
+}
+
+.other-book {
+    width: 200px;
+    margin: 20px;
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.swap-ready-button {
+    display: block;
+    margin: auto;
+}
+
+.hiddent {
+    display:none;
+}
+
+.chat-options {
+    display: flex;
+    width: 450px;
+    margin: auto;
+}
+
+.chat-options button {
+    padding: 5px;
 }

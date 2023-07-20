@@ -12,8 +12,7 @@ export const getBooks = async (search: string): Promise<any> => {
 
 export const getBook = async (isbn: string): Promise<any> => {
     try {
-        let result = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=+isbn:${isbn}&key=AIzaSyBAtIShjcw81Yux9Qem7DPY95B_HMY-pkw`)
-        return result;
+        return (await axios.get(`https://www.googleapis.com/books/v1/volumes?q=+isbn:${isbn}&key=AIzaSyBAtIShjcw81Yux9Qem7DPY95B_HMY-pkw`))        
     }
     catch (error) {
         console.error(error);
