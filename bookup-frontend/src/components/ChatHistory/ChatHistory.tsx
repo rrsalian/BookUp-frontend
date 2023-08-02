@@ -99,7 +99,7 @@ export function ChatHistory(props: { currentUser: Buser }) {
     }
 
     function addBook(bIsbn: string) {
-        console.log(addBook);
+        console.log("addBook");
     }
 
     return (

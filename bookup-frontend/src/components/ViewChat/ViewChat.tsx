@@ -7,6 +7,7 @@ import { UserMessageInfo } from "../../models/UserMessageInfo";
 import { getBook } from "../../services/bookSearchService/bookSearchService";
 import { log } from "console";
 import { updateUser } from "../../services/userService/userService";
+import { BookCard } from "../BookCard/BookCard";
 
 export function ViewChat(props: { currentUser: Buser, chatData: UserMessageInfo, onClose: () => void }) {
 
@@ -20,6 +21,8 @@ export function ViewChat(props: { currentUser: Buser, chatData: UserMessageInfo,
     const [swappedBook, setSwappedBook] = useState("");
     const [swapStatus, setSwapStatus] = useState(false);
     const [swapCompleteToFinish, setSwapCompleteToFinish] = useState(true);
+    const [showBtnPopUp, setShowBtnPopUp] = useState(false);
+    const [showBook, setShowBook] = useState<any>({});    
 
     const myRef = useRef<null | HTMLDivElement>(null);
 
@@ -30,6 +33,28 @@ export function ViewChat(props: { currentUser: Buser, chatData: UserMessageInfo,
             getUserMessages(isbn, me._id!, other._id!);
         }
     }, [])
+
+    const handleShowBtnPopUp = (book: any) => {        
+        if (!showBtnPopUp) {
+            setShowBtnPopUp(true);
+            setShowBook(book);            
+        }
+    };
+
+    const handleHideBtnPopUp = () => {
+        if (showBtnPopUp) {
+            setShowBtnPopUp(false);
+            setShowBook({});
+        }
+    }
+
+    function showBookLocation(bIsbn: string) {
+        console.log("showBookLocation");
+    }
+
+    function addBook(bIsbn: string) {
+        console.log("addBook");
+    }
 
     async function getUserMessages(isbn: string, user1_id: string, user2_id: string) {
         const userMessages = await getMessagesByUserBookID(isbn, user1_id, user2_id);
@@ -58,6 +83,8 @@ export function ViewChat(props: { currentUser: Buser, chatData: UserMessageInfo,
 
     function sendClosechat() {
         setOtherUserBookPopup(false);
+        setShowBtnPopUp(false);
+        setShowBook({});
         props.onClose();
     }
 
@@ -175,7 +202,7 @@ export function ViewChat(props: { currentUser: Buser, chatData: UserMessageInfo,
             <div className="chat-options">
                 <button className="btn" disabled={otherUserBookPopup} style={props.chatData?.otheruser._id === props.chatData?.msginfo.initiator ? { display: "block", margin: "auto" } : { display: "none" }} 
                         onClick={() => getOtherBookList(props.chatData?.otheruser!)}>View {props.chatData?.otheruser.email}'s books</button>
-                <button className="btn" onClick={sendClosechat}>Close Chat</button>
+                <button className="btn" disabled={showBtnPopUp} onClick={sendClosechat}>Close Chat</button>
             </div>
             <div className="chatSpace">
                 <h3>Chat Messages</h3>
@@ -211,26 +238,27 @@ export function ViewChat(props: { currentUser: Buser, chatData: UserMessageInfo,
                 <div className="chatInputWrapper">
                     <input className="textarea input" type="text" value={newText} placeholder="Enter your message..."
                         onChange={handleChange} />
-                    <button className="btn" onClick={handleSubmit}>Send</button>
+                    <button className="btn" disabled={showBtnPopUp} onClick={handleSubmit}>Send</button>
                 </div>
             </div>
 
             <div className={otherUserBookPopup ? "other-book-list" : "hidden"}>
-                <button className="btn" onClick={() => setOtherUserBookPopup(false)}> hide books</button>
+                <button className="btn" disabled={showBtnPopUp}  onClick={() => {setOtherUserBookPopup(false); setShowBtnPopUp(false); setShowBook({})}}> hide books</button>
                 <p>{props.chatData?.otheruser.email}'s books</p>
                 <div className={(props.chatData?.otheruser._id === props.chatData?.msginfo.initiator) ? "other-books-view" : "hidden"}>
                     {
-                        otherBookList.map(book => <div ref={myRef} className="other-book">
-                            <img src={book.volumeInfo.imageLinks?.thumbnail!} />
+                        otherBookList.map((book, index) => <div ref={myRef} className="other-book">
+                            <button className="btn-showpopup" key={index} onClick={() => handleShowBtnPopUp(book)}><img src={book.volumeInfo.imageLinks?.thumbnail!} /></button>
                             <p>{book.volumeInfo.title}</p>
-                            <button className="btn" disabled={swapStatus} onClick={() => readyToSwapBook(book.volumeInfo.title, book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? book.volumeInfo.industryIdentifiers[0].identifier : book.volumeInfo.industryIdentifiers[1].identifier)
+                            <button className="btn" disabled={swapStatus || showBtnPopUp} onClick={() => readyToSwapBook(book.volumeInfo.title, book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? book.volumeInfo.industryIdentifiers[0].identifier : book.volumeInfo.industryIdentifiers[1].identifier)
                             }>Ready to Swap</button>
                         </div>)
                     }
 
                 </div>
-                <button disabled={!swapCompleteToFinish} className={!swapStatus ? "hidden": "swap-ready-button" } onClick={() => swapComplete()}>Complete Swap</button>
+                <button disabled={!swapCompleteToFinish || showBtnPopUp} className={!swapStatus ? "hidden": "swap-ready-button" } onClick={() => swapComplete()}>Complete Swap</button>
             </div>
+            <BookCard book={showBook} viewOnly={true} user={props.currentUser} showBtnPopUp={showBtnPopUp} onClose={handleHideBtnPopUp} showBookLocation={(isbn) => showBookLocation(isbn)} addBook={(isbn) => addBook(isbn)} isbn={() => setIsbn(isbn)}/>
         </div>
     )
 
