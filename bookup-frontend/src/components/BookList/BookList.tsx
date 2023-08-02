@@ -14,7 +14,7 @@ export function BookList(props: {bookList: any[], user:Buser, chatUser: (chatUse
     const [isbnUsers, setIsbnUsers] = useState<Buser[]>([]);
     
     let userBooks = Object.assign(props.user.books);
-    
+
     const handleShowBtnPopUp = (book: any) => {
         if (!showBtnPopUp) {
             setShowBtnPopUp(true);
@@ -93,7 +93,7 @@ export function BookList(props: {bookList: any[], user:Buser, chatUser: (chatUse
 
             }
             </div>
-            <BookCard book={showBook} user={props.user} showBtnPopUp={showBtnPopUp} onClose={handleHideBtnPopUp} showBookLocation={(isbn) => showBookLocation(isbn)} addBook={(isbn) => addBook(isbn)} isbn={() => setIsbn(isbn)}/>
+            <BookCard book={showBook} viewOnly={false} user={props.user} showBtnPopUp={showBtnPopUp} onClose={handleHideBtnPopUp} showBookLocation={(isbn) => showBookLocation(isbn)} addBook={(isbn) => addBook(isbn)} isbn={() => setIsbn(isbn)}/>
         </div>
     )
 }

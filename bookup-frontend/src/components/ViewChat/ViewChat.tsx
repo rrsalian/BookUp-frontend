@@ -100,7 +100,7 @@ export function ViewChat(props: { currentUser: Buser, chatData: UserMessageInfo,
 
         const date = new Date(); // Or the date you'd like converted.
         const isoDateTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
-        const lastMsg = `I am Ready to Swap a Book with title '${title}' and Isbn ${swapIsbn}`;
+        const lastMsg = `I am Ready to Swap a Book with title '${title}' and Isbn ${swapIsbn}. Let's Setup a Location to Meet and exchange our book`;
 
         setSwappedBook(swapIsbn);    // isn't working
         console.log("swappedBook " + swappedBook)

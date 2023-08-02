@@ -5,14 +5,16 @@ import { Buser } from "../../models/User";
 
 
 
-export function BookCard(props: { book: any, user: Buser, showBtnPopUp: boolean, onClose: () => void, showBookLocation: (isbn: string) => void, addBook: (isbn: string) => void, isbn: (isbn: string) => void }) {
+export function BookCard(props: { book: any, viewOnly: boolean, user: Buser, showBtnPopUp: boolean, onClose: () => void, showBookLocation: (isbn: string) => void, addBook: (isbn: string) => void, isbn: (isbn: string) => void }) {
+
+    useEffect ( () => {
+        console.log("in Book Card showPopUp" +  JSON.stringify(props.book.volumeInfo));
+    },[])
 
     function handleIsbn() {
         props.addBook(props.book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? props.book.volumeInfo.industryIdentifiers[0].identifier : props.book.volumeInfo.industryIdentifiers[1].identifier);
         props.isbn(props.book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? props.book.volumeInfo.industryIdentifiers[0].identifier : props.book.volumeInfo.industryIdentifiers[1].identifier);
-    }
-
-    //const isbns = props.user.books.includes(props.book.volumeInfo.industryIdentifiers[0]);
+    }    
 
     if (props.showBtnPopUp) {
         return (
@@ -26,10 +28,16 @@ export function BookCard(props: { book: any, user: Buser, showBtnPopUp: boolean,
                         props.book.searchInfo.textSnippet ? <p>Text Snippet: {props.book.searchInfo.textSnippet}</p>
                         : <p>No description available</p>
                     }
-                    
-                    <address>Author/s: {props.book.volumeInfo.authors}</address>
-                    <p>ISBN: {props.book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? props.book.volumeInfo.industryIdentifiers[0].identifier : props.book.volumeInfo.industryIdentifiers[1].identifier}</p>
-
+                    {
+                        props.book.volumeInfo.authors ? <address>Author/s: {props.book.volumeInfo.authors}</address>
+                        : <address>Author/s: No author available</address>
+                    }
+                    <p>ISBN: 
+                        {
+                            props.book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? props.book.volumeInfo.industryIdentifiers[0].identifier : props.book.volumeInfo.industryIdentifiers[1].identifier
+                        }
+                    </p>
+                    <div className={ props.viewOnly ? "hidden":"viewOnly"}>
                     {
                         !props.user.books.includes(props.book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? props.book.volumeInfo.industryIdentifiers[0].identifier : props.book.volumeInfo.industryIdentifiers[1].identifier) ?
                             <div>
@@ -38,6 +46,7 @@ export function BookCard(props: { book: any, user: Buser, showBtnPopUp: boolean,
                             </div>
                             : <button disabled >Already have it</button>
                     }
+                    </div>
                 </div>
             </div>
         );

@@ -12,10 +12,16 @@ export function BookFinder(props: { user: Buser, chatUser: (chatUser: Buser) => 
 
     async function handleBookSearch(e: FormEvent) {
         e.preventDefault();
-        await getBooks(search).then(books => {
-            setBookData(books.data.items);
-
+        await getBooks(search).then( result => {            
+            const books = result.data.items.filter( function(item: any, index: number) {
+                if (item.volumeInfo.industryIdentifiers && item.volumeInfo.imageLinks?.thumbnail) {
+                    console.log(item.volumeInfo.imageLinks?.thumbnail);
+                    return (item.volumeInfo.industryIdentifiers.length > 1);
+                }
+            });
+            setBookData(books);            
         });
+        console.log("BookData" + JSON.stringify(bookData.length));
     }
 
     function setOtherUser(bUser: Buser) {

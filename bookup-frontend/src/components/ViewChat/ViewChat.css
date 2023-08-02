@@ -8,6 +8,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    
 }
 
 .chatwrapper {
@@ -19,7 +20,7 @@
     width: 450px;
     height: 500px;
     display: flex;
-    
+    background-color: #4A6969;
     border:1px solid grey; 
     border-radius: 5px;
     margin: 20px;
@@ -42,8 +43,7 @@
 
 }
 
-.chatWindow {
-   
+.chatWindow {    
     padding: 20px;
     overflow-y:scroll;
 }

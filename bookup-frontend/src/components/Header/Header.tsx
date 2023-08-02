@@ -4,6 +4,7 @@ import bookUpLogo from "../../images/guilded_image_ca1df0acf51f97f657574c81c890a
 import { Link } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext";
 import { signOut } from "../../firebaseConfig";
+import "./Header.css"
 
 export function Header() {
 

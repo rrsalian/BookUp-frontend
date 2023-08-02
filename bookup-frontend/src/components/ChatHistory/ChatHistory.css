@@ -26,14 +26,18 @@ html, body, #root, .App {
     margin: 25px 0;
     font-size: 0.9em;
     font-family: sans-serif;
-    box-shadow: 0 0 20px rgba(73, 68, 117, 0.15);
+    
     margin:20px;
 }
 
-.styled-table thead tr {
-  background-color: #009879;
+.styled-table thead {
+  background-color: #302b4c;
   color: #ffffff;
   text-align: left;
+}
+
+tr {
+  background-color: #c2d8dc;
 }
 
 .styled-table th,
@@ -46,12 +50,12 @@ td {
   white-space: nowrap;
   text-overflow: ellipsis;
   padding:10px;
-  color: rgb(139, 51, 0);
+  color: rgb(11, 29, 38);
 }
 
 th{
-  background-color: grey;
-  color: yellow;
+  background-color: rgb(84, 89, 110);
+  color: rgb(173, 201, 210);
 }
 
 .chatbtn {

@@ -22,12 +22,12 @@ export function ChatHistory(props: { currentUser: Buser }) {
     const [othersInvites, setOthersInvites] = useState<Message[]>([]);
     const [myMsgInfo, setUserMsgInfo] = useState<UserMessageInfo[]>([])
     const [otherMsgInfo, setOtherMsgInfo] = useState<UserMessageInfo[]>([])
-    const [chatData, setChatData] = useState<UserMessageInfo>();    
+    const [chatData, setChatData] = useState<UserMessageInfo>();
     const [openChatBtn, setOpenChatBtn] = useState(true);
     const [rowIsActive, setRowIsActive] = useState(-1);
     const [showBtnPopUp, setShowBtnPopUp] = useState(false);
     const [showBook, setShowBook] = useState<any>({});
-    const [isbn, setIsbn] = useState("");
+    const [isbn, setIsbn] = useState("");    
     
     const myRef = useRef<null | HTMLDivElement>(null);
 
@@ -78,11 +78,11 @@ export function ChatHistory(props: { currentUser: Buser }) {
     }
 
     async function handleShowBtnPopUp(bIsbn: string) {        
-        const book = await getBook(bIsbn).then( book => book.data.items);
+        const book = await getBook(bIsbn).then( book => book.data.items );        
         if (!showBtnPopUp) {
             setIsbn(bIsbn);
             setShowBtnPopUp(true);
-            setShowBook(book);
+            setShowBook(book[0]);
         }
     }
 
@@ -123,7 +123,8 @@ export function ChatHistory(props: { currentUser: Buser }) {
                                         <tr key={minvite.id} className={rowIsActive === minvite.id ? "active-row":"tblrow"}>
                                             <td>{minvite.otheruser.email}</td>
                                             <td>{minvite.msginfo.isbn}</td>
-                                            <td className="chatbtn"><button className="btn" disabled={!openChatBtn} onClick={() => setChatSettingsData(minvite)}>Open Chat</button></td>                                            
+                                            <td className="chatbtn"><button className="btn" disabled={!openChatBtn} onClick={() => setChatSettingsData(minvite)}>Open Chat</button></td>
+                                            <td className="chatbtn"><button className="btn" disabled={!openChatBtn} onClick={() => handleShowBtnPopUp(minvite.msginfo.isbn)}>View Book</button></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -148,13 +149,14 @@ export function ChatHistory(props: { currentUser: Buser }) {
                                             <td>{oinvite.otheruser.email}</td>
                                             <td>{oinvite.msginfo.isbn}</td>
                                             <td className="chatbtn"><button className="btn" disabled={!openChatBtn} onClick={() => setChatSettingsData(oinvite)}>Open Chat</button></td>
+                                            <td className="chatbtn"><button className="btn" disabled={!openChatBtn} onClick={() => handleShowBtnPopUp(oinvite.msginfo.isbn)}>View My Book</button></td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         ))
                     }                    
-                    
+                    <BookCard book={showBook} viewOnly={true} user={props.currentUser} showBtnPopUp={showBtnPopUp} onClose={handleHideBtnPopUp} showBookLocation={(isbn) => showBookLocation(isbn)} addBook={(isbn) => addBook(isbn)} isbn={() => setIsbn(isbn)}/>
                 </div>
                 <div>
                 {
