@@ -6,6 +6,10 @@
     justify-content: center;
 }
 
+.book-btn-noshow {
+    cursor: none;
+}
+
 @media only screen and (max-width: 480px) {
 
     .booklist {

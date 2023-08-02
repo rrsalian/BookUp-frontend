@@ -1,10 +1,26 @@
-.mybooks{
-   
-    display: flex;
+.hdr-mybooks {
+ justify-content: center;
+ align-content: center;
+ margin-bottom: 30px;
+ text-decoration: solid;
+ color:rgb(47, 47, 201)
+}
+
+.mybooks{  
+    width: 100vw; 
+    display: flex;    
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .book {
     width: 200px;
     justify-content: center;
+    align-items: center;
+    border: 1px solid rgb(11, 38, 69);
+    margin: 5px;
+}
+
+.btn-noshowpopup {
+    cursor: none;
 }

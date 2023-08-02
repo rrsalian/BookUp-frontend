@@ -22,7 +22,7 @@ export function ViewChat(props: { currentUser: Buser, chatData: UserMessageInfo,
     const [swapStatus, setSwapStatus] = useState(false);
     const [swapCompleteToFinish, setSwapCompleteToFinish] = useState(true);
     const [showBtnPopUp, setShowBtnPopUp] = useState(false);
-    const [showBook, setShowBook] = useState<any>({});    
+    const [showBook, setShowBook] = useState<any>({});
 
     const myRef = useRef<null | HTMLDivElement>(null);
 
@@ -34,10 +34,10 @@ export function ViewChat(props: { currentUser: Buser, chatData: UserMessageInfo,
         }
     }, [])
 
-    const handleShowBtnPopUp = (book: any) => {        
+    const handleShowBtnPopUp = (book: any) => {
         if (!showBtnPopUp) {
             setShowBtnPopUp(true);
-            setShowBook(book);            
+            setShowBook(book);
         }
     };
 
@@ -71,7 +71,7 @@ export function ViewChat(props: { currentUser: Buser, chatData: UserMessageInfo,
         }
         if (messages![messages!.length - 1].state === "Ready to swap") {
             setSwapStatus(true);
-            setSwapCompleteToFinish(true);            
+            setSwapCompleteToFinish(true);
         }
         scrollToBottom();
     }
@@ -160,7 +160,7 @@ export function ViewChat(props: { currentUser: Buser, chatData: UserMessageInfo,
     async function swapComplete() {
         const date = new Date(); // Or the date you'd like converted.
         const isoDateTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
-                
+
         const newMessage: Message = {
             "createdAt": isoDateTime,
             "initiator": props.chatData?.msginfo.initiator!,
@@ -185,9 +185,9 @@ export function ViewChat(props: { currentUser: Buser, chatData: UserMessageInfo,
         let otherUser = Object.assign(props.chatData.otheruser);
         const myBooks = Object.assign(props.currentUser.books);
         const otherBooks = Object.assign(props.chatData.otheruser.books);
-        
+
         const myBkIndex = props.currentUser.books.findIndex((isbn) => isbn === props.chatData?.msginfo.isbn!);
-        const otherBkIndex = props.chatData.otheruser.books.findIndex((isbn) => isbn === swappedBook );
+        const otherBkIndex = props.chatData.otheruser.books.findIndex((isbn) => isbn === swappedBook);
         console.log("myBooks before swap " + myBooks);
         myBooks.splice(myBkIndex, 1, messages[messages.length - 1].swapToIsbn);
         otherBooks.splice(otherBkIndex, 1, props.chatData?.msginfo.isbn!);
@@ -200,8 +200,8 @@ export function ViewChat(props: { currentUser: Buser, chatData: UserMessageInfo,
     return (
         <div className="main">
             <div className="chat-options">
-                <button className="btn" disabled={otherUserBookPopup} style={props.chatData?.otheruser._id === props.chatData?.msginfo.initiator ? { display: "block", margin: "auto" } : { display: "none" }} 
-                        onClick={() => getOtherBookList(props.chatData?.otheruser!)}>View {props.chatData?.otheruser.email}'s books</button>
+                <button className="btn" disabled={otherUserBookPopup} style={props.chatData?.otheruser._id === props.chatData?.msginfo.initiator ? { display: "block", margin: "auto" } : { display: "none" }}
+                    onClick={() => getOtherBookList(props.chatData?.otheruser!)}>View {props.chatData?.otheruser.email}'s books</button>
                 <button className="btn" disabled={showBtnPopUp} onClick={sendClosechat}>Close Chat</button>
             </div>
             <div className="chatSpace">
@@ -243,7 +243,7 @@ export function ViewChat(props: { currentUser: Buser, chatData: UserMessageInfo,
             </div>
 
             <div className={otherUserBookPopup ? "other-book-list" : "hidden"}>
-                <button className="btn" disabled={showBtnPopUp}  onClick={() => {setOtherUserBookPopup(false); setShowBtnPopUp(false); setShowBook({})}}> hide books</button>
+                <button className="btn" disabled={showBtnPopUp} onClick={() => { setOtherUserBookPopup(false); setShowBtnPopUp(false); setShowBook({}) }}> hide books</button>
                 <p>{props.chatData?.otheruser.email}'s books</p>
                 <div className={(props.chatData?.otheruser._id === props.chatData?.msginfo.initiator) ? "other-books-view" : "hidden"}>
                     {
@@ -256,9 +256,9 @@ export function ViewChat(props: { currentUser: Buser, chatData: UserMessageInfo,
                     }
 
                 </div>
-                <button disabled={!swapCompleteToFinish || showBtnPopUp} className={!swapStatus ? "hidden": "swap-ready-button" } onClick={() => swapComplete()}>Complete Swap</button>
+                <button disabled={!swapCompleteToFinish || showBtnPopUp} className={!swapStatus ? "hidden" : "swap-ready-button"} onClick={() => swapComplete()}>Complete Swap</button>
             </div>
-            <BookCard book={showBook} viewOnly={true} user={props.currentUser} showBtnPopUp={showBtnPopUp} onClose={handleHideBtnPopUp} showBookLocation={(isbn) => showBookLocation(isbn)} addBook={(isbn) => addBook(isbn)} isbn={() => setIsbn(isbn)}/>
+            <BookCard book={showBook} viewOnly={true} user={props.currentUser} showBtnPopUp={showBtnPopUp} onClose={handleHideBtnPopUp} showBookLocation={(isbn) => showBookLocation(isbn)} addBook={(isbn) => addBook(isbn)} isbn={() => setIsbn(isbn)} />
         </div>
     )
 
