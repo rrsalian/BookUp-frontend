@@ -1,13 +1,35 @@
 
+.bookcard {
+    width: 200px;
+    margin: 20px;
+    padding: 15px;    
+    border-radius: 5px;
+}
 
 .booklist {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: center;    
+}
+
+.book-btn {
+    background: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    border:0px;    
 }
 
 .book-btn-noshow {
+    background: none;
     cursor: none;
+    box-sizing: border-box;
+    border:0px;
+    
+}
+
+.book-image {    
+    border: 1px solid rgba(0, 0, 0, 0.666);
+    box-shadow: 1px 1px 7px 3px #14364266;
 }
 
 @media only screen and (max-width: 480px) {

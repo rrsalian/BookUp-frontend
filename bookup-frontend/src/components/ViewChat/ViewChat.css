@@ -19,8 +19,8 @@
 .chatSpace {    
     width: 450px;
     height: 500px;
-    display: flex;
-    background-color: #5da283;
+    display: flex;    
+    background: linear-gradient(90deg, rgba(72,104,120,1) 27%, rgba(9,75,121,0.5831072297082895) 94%);
     border:1px solid grey; 
     border-radius: 5px;
     margin: 20px;
@@ -131,7 +131,10 @@
     cursor: pointer;
 }
 
+.btn-showpopup:disabled {
+    cursor: none;    
+}
+
 .btn:disabled {
-    cursor: none;
-    pointer-events: none;
+    cursor: none;    
 }

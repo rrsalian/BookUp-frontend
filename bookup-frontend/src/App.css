@@ -5,11 +5,13 @@
 
 .App {
   text-align: center;
+  
 }
 
 body {
   width: 100vw;
-  background-color: #e7f1f1;
+  background: linear-gradient(90deg, rgba(111,120,72,1) 26%, rgba(9,75,121,0.5831072297082895) 94%);
+ /* background: linear-gradient(90deg, rgba(111,120,72,1) 1%, rgba(9,75,121,0.5831072297082895) 33%); */
 }
 
 h1 {

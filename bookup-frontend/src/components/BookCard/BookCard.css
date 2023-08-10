@@ -1,10 +1,26 @@
 
+.popup-container {
+    position: absolute;    
+}
 
-.bookcard {
-    width: 200px;
-    margin: 20px;
-    padding: 15px;
-    border-radius: 5px;
+.book-popup {
+    margin: auto;
+    padding: 5px;
+    width: 50%;
+    border: 2px solid black;
+    position: fixed;      
+    display:flex;
+    flex-direction: column;    
+    top: 30vh;
+    left: 24.4vw;
+    z-index: 300;
+    background: radial-gradient(circle, rgba(238,174,202,1) 10%, rgba(148,187,233,0.9864685742461047) 78%);
+}
+
+.btn-bookclose {
+    background: none;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .book-image {
@@ -12,42 +28,10 @@
     box-shadow: 1px 1px 7px 3px #14364266;
 }
 
-.no-book-image {
-    border: 3px solid rgba(0, 0, 0, 0.666);
-    box-shadow: 1px 1px 7px 3px #14364266;
-    height: 200px;
-    width: 150px;
-    padding: 5px;
-    font-size: 1.3rem;
-}
-
-.book-btn {
-    background-color: none;
-    border: none;
-    cursor: pointer;
-}
-
-.book-btn:disabled {
-    background-color: none;
-    border: none;
-    cursor: default;
-}
-
-.popup-container {
-    position: absolute;
-}
-
-.book-popup {
-    margin: auto;
-    padding: 5px;
-    width: 50%;
-    
-    border: 2px solid black;
-    position: fixed;
-    top: 30vh;
-    left: 24.4vw;
-    z-index: 300;
-    background-color: #fff;
+.book-main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
 }
 
 .hidden {

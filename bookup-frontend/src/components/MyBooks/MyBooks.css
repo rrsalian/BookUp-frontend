@@ -6,7 +6,7 @@
  color:rgb(47, 47, 201)
 }
 
-.mybooks{  
+.mybooks{
     width: 100vw; 
     display: flex;    
     flex-wrap: wrap;
@@ -14,11 +14,16 @@
 }
 
 .book {
-    width: 200px;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid rgb(11, 38, 69);
-    margin: 5px;
+    width: 200px;    
+    margin: 15px;   
+}
+
+.btn-showpopup {
+    background: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    border:0px;
+    padding:0px;    
 }
 
 .btn-noshowpopup {

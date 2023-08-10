@@ -25,6 +25,7 @@ export function ViewChat(props: { currentUser: Buser, chatData: UserMessageInfo,
     const [showBook, setShowBook] = useState<any>({});
 
     const myRef = useRef<null | HTMLDivElement>(null);
+    const [pos, setPos ] = useState<any>({});
 
     useEffect(() => {
         if (me && other) {
@@ -34,10 +35,21 @@ export function ViewChat(props: { currentUser: Buser, chatData: UserMessageInfo,
         }
     }, [])
 
+    const saveCursorPosition = function(x: number, y: number) {
+        let ps = { x : x, y : y };
+        ps.x = +(x / window.innerWidth).toFixed(2);
+        ps.y = +(y / window.innerHeight).toFixed(2);
+        setPos(ps);
+        document.documentElement.style.setProperty('--x', pos.x);
+        document.documentElement.style.setProperty('--y', pos.y);
+    }
+
     const handleShowBtnPopUp = (book: any) => {
         if (!showBtnPopUp) {
             setShowBtnPopUp(true);
             setShowBook(book);
+            document.addEventListener('mousemove', e => { saveCursorPosition(e.clientX, e.clientY); });
+            console.log(pos);
         }
     };
 
@@ -90,28 +102,31 @@ export function ViewChat(props: { currentUser: Buser, chatData: UserMessageInfo,
 
     async function handleSubmit(e: any) {
         e.preventdefault;
-        const date = new Date(); // Or the date you'd like converted.
-        const isoDateTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
 
-        let initiator: string = (messages[0]) ? messages[0].initiator! : props.currentUser._id!;
-        let currentState = (messages.length === 0) ? "invite" : ""
+        if (newText !== "") {
+            const date = new Date(); // Or the date you'd like converted.
+            const isoDateTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
 
-        const newMessage: Message = {
-            "createdAt": isoDateTime,
-            "initiator": initiator,
-            "isbn": isbn,
-            "receiverId": other._id!,
-            "senderId": me._id!,
-            "state": currentState,
-            "swapToIsbn": "",
-            "message": newText
-        };
+            let initiator: string = (messages[0]) ? messages[0].initiator! : props.currentUser._id!;
+            let currentState = (messages.length === 0) ? "invite" : ""
 
-        await postMessage(newMessage);
-        const newMessages: Message[] = [...messages, newMessage];
-        setMessages(newMessages);
-        setNewText("");
-        scrollToBottom();
+            const newMessage: Message = {
+                "createdAt": isoDateTime,
+                "initiator": initiator,
+                "isbn": isbn,
+                "receiverId": other._id!,
+                "senderId": me._id!,
+                "state": currentState,
+                "swapToIsbn": "",
+                "message": newText
+            };
+
+            await postMessage(newMessage);
+            const newMessages: Message[] = [...messages, newMessage];
+            setMessages(newMessages);
+            setNewText("");
+            scrollToBottom();
+        }
     };
 
     const handleChange = (e: any) => {
@@ -248,7 +263,7 @@ export function ViewChat(props: { currentUser: Buser, chatData: UserMessageInfo,
                 <div className={(props.chatData?.otheruser._id === props.chatData?.msginfo.initiator) ? "other-books-view" : "hidden"}>
                     {
                         otherBookList.map((book, index) => <div ref={myRef} className="other-book">
-                            <button className="btn-showpopup" key={index} onClick={() => handleShowBtnPopUp(book)}><img src={book.volumeInfo.imageLinks?.thumbnail!} /></button>
+                            <button disabled={showBtnPopUp} className="btn-showpopup" key={index} onClick={() => handleShowBtnPopUp(book)}><img src={book.volumeInfo.imageLinks?.thumbnail!} /></button>
                             <p>{book.volumeInfo.title}</p>
                             <button className="btn" disabled={swapStatus || showBtnPopUp} onClick={() => readyToSwapBook(book.volumeInfo.title, book.volumeInfo.industryIdentifiers[0].type === "ISBN_13" ? book.volumeInfo.industryIdentifiers[0].identifier : book.volumeInfo.industryIdentifiers[1].identifier)
                             }>Ready to Swap</button>

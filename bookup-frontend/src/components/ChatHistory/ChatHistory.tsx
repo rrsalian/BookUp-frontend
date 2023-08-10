@@ -123,8 +123,8 @@ export function ChatHistory(props: { currentUser: Buser }) {
                                         <tr key={minvite.id} className={rowIsActive === minvite.id ? "active-row":"tblrow"}>
                                             <td>{minvite.otheruser.email}</td>
                                             <td>{minvite.msginfo.isbn}</td>
-                                            <td className="chatbtn"><button className="btn" disabled={!openChatBtn} onClick={() => setChatSettingsData(minvite)}>Open Chat</button></td>
-                                            <td className="chatbtn"><button className="btn" disabled={!openChatBtn} onClick={() => handleShowBtnPopUp(minvite.msginfo.isbn)}>View Book</button></td>
+                                            <td className="chatbtn"><button className="btn" disabled={!openChatBtn || showBtnPopUp} onClick={() => setChatSettingsData(minvite)}>Open Chat</button></td>
+                                            <td className="chatbtn"><button className="btn" disabled={!openChatBtn || showBtnPopUp} onClick={() => handleShowBtnPopUp(minvite.msginfo.isbn)}>View Book</button></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -148,8 +148,8 @@ export function ChatHistory(props: { currentUser: Buser }) {
                                         <tr key={oinvite.id} className={rowIsActive === oinvite.id ? "active-row":"tblrow"}>
                                             <td>{oinvite.otheruser.email}</td>
                                             <td>{oinvite.msginfo.isbn}</td>
-                                            <td className="chatbtn"><button className="btn" disabled={!openChatBtn} onClick={() => setChatSettingsData(oinvite)}>Open Chat</button></td>
-                                            <td className="chatbtn"><button className="btn" disabled={!openChatBtn} onClick={() => handleShowBtnPopUp(oinvite.msginfo.isbn)}>View My Book</button></td>
+                                            <td className="chatbtn"><button className="btn" disabled={!openChatBtn || showBtnPopUp} onClick={() => setChatSettingsData(oinvite)}>Open Chat</button></td>
+                                            <td className="chatbtn"><button className="btn" disabled={!openChatBtn || showBtnPopUp} onClick={() => handleShowBtnPopUp(oinvite.msginfo.isbn)}>View My Book</button></td>
                                         </tr>
                                     </tbody>
                                 </table>
